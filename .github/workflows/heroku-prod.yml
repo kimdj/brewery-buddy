@@ -22,7 +22,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Deploy to Heroku
-      - uses: AkhileshNS/heroku-deploy@v3.0.4
+        uses: AkhileshNS/heroku-deploy@v3.0.4
         with:
           # This will be used for authentication. You can find it in your heroku homepage account settings
           heroku_api_key: 06a36657-6b65-4e0b-bbb9-89820fb5cfe5

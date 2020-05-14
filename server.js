@@ -29,7 +29,10 @@ app.use(forceSSL());
 
 // Start the app by listening on the default
 // Heroku port
-app.listen(process.env.PORT || 8080);
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+});
 
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used

@@ -1,0 +1,14 @@
+<form class="form-inline col-md-12" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <select class="form-control" id="searchType" formControlName="searchType">
+        <option>Default</option>
+        <option>Keyword</option>
+      </select>
+    </div>
+    <div class="form-group has-error">
+      <input type="text" class="form-control" id="searchCriteria" formControlName="searchCriteria">
+    </div>
+    <div class="form-group">
+      <button id="submitButton" type="submit" class="btn btn-primary btn-lg mr-1">Chug!</button>
+    </div>
+  </form>

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputUserDataFormComponent } from './input-user-data-form.component';
+import { InputUserDataFormComponent } from './search-form.component';
 
 describe('InputUserDataFormComponent', () => {
   let component: InputUserDataFormComponent;

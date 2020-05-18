@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators, ValidatorFn } from '@a
 
 @Component({
   selector: 'input-user-data-form',
-  templateUrl: './input-user-data-form.component.html',
-  styleUrls: ['./input-user-data-form.component.scss']
+  templateUrl: './search-form.component.html',
+  styleUrls: ['./search-form.component.scss']
 })
 export class InputUserDataFormComponent implements OnInit {
   userForm: FormGroup;

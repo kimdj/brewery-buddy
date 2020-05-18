@@ -4,14 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { InputUserDataFormComponent } from './input-user-data-form/input-user-data-form.component';
-import { DisplayUserDataFormComponent } from './display-user-data-form/display-user-data-form.component';
-
+import { InputUserDataFormComponent } from './search-form/search-form.component';
 @NgModule({
   declarations: [
     AppComponent,
-    InputUserDataFormComponent,
-    DisplayUserDataFormComponent
+    InputUserDataFormComponent
   ],
   imports: [
     BrowserModule,

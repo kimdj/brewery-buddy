@@ -1,30 +1,30 @@
-import { Component } from '@angular/core';
-import { RSSApiService } from './rssapi.service';
+import { Component, OnInit } from '@angular/core';
+import { FeedService } from './feed.service';
+import './rxjs-operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'brewery-buddy';
+export class AppComponent implements OnInit {
 
-  mArticles:Array<any>;
-  mSources:Array<any>;
+  private feedUrl: string = 'https%3A%2F%2Fwww.becompany.ch%2Fen%2Fblog%2Ffeed.xml';
+  private feeds: any;
 
-  constructor(private rssapi:RSSApiService){
-    console.log('app component constructor called');         
-  }
+  constructor (
+    private feedService: FeedService
+  ) {}
 
   ngOnInit() {
-        //load articles
-      this.rssapi.initArticles().subscribe(data => this.mArticles = data['articles']);
-    //load news sources
-    this.rssapi.initSources().subscribe(data=> this.mSources = data['sources']);  
-    }
-
-  searchArticles(source){
-    console.log("selected source is: "+source);
-    this.rssapi.getArticlesByID(source).subscribe(data => this.mArticles = data['articles']);
+    this.refreshFeed();
   }
+
+  private refreshFeed() {
+    this.feedService.getFeedContent(this.feedUrl)
+        .subscribe(
+            feed => this.feeds = feed.items,
+            error => console.log(error));
+  }
+
 }

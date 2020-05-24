@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-let Parser = require('rss-parser');
+import * as Parser from "rss-parser";
 
 @Component({
   selector: 'app-rss',

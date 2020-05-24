@@ -1,10 +1,6 @@
 {
   "name": "brewery-buddy",
   "version": "0.0.0",
-  "browser": {
-    "http": false,
-    "https": false
-  },
   "scripts": {
     "ng": "ng",
     "ngServe": "ng serve",
@@ -29,11 +25,14 @@
     "@angular/platform-browser": "~9.1.4",
     "@angular/platform-browser-dynamic": "~9.1.4",
     "@angular/router": "~9.1.4",
+    "@types/scriptjs": "0.0.2",
     "@types/xml2js": "^0.4.5",
     "express": "^4.17.1",
+    "http": "0.0.1-security",
     "https": "^1.0.0",
     "rss-parser": "^3.8.0",
     "rxjs": "~6.5.4",
+    "scriptjs": "^2.5.9",
     "stream": "0.0.2",
     "timers": "^0.1.1",
     "tslib": "^1.10.0",

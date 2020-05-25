@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { GeolocationService } from '../geoloction.service';
+import { GeolocationService } from '@app/services/geoloction.service';
 
 @Component({
   selector: 'app-search-form',

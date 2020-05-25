@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { HttpClient } from "@angular/common/http";
-import { GeolocationService } from '../geoloction.service';
+import { GeolocationService } from '@app/services/geoloction.service';
 
 interface Beer {
   title:string;
@@ -16,7 +16,7 @@ interface Beer {
   templateUrl: './rss-feed.component.html',
   styleUrls: ['./rss-feed.component.scss']
 })
-export class RssComponent implements OnInit{
+export class RssFeedComponent implements OnInit{
   beers: Array<Beer>;
   curCoords: any;
 

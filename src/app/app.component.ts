@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { SpinnerService } from './services/spinner.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SpinnerService } from './services/spinner.service';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -41,13 +42,25 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private spinner: SpinnerService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private notifier: NotificationService) {
 
   }
 
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.spinner.on();
+    setTimeout(() => {
+      this.notifier.showSuccess('foo', 'bar');
+    }, 0);
+    setTimeout(() => {
+      this.notifier.showError('foo', 'bar');
+    }, 2000);
+    setTimeout(() => {
+      this.notifier.showWarning('foo', 'bar');
+    }, 4000);
+    setTimeout(() => {
+      this.notifier.showInfo('foo', 'bar');
+    }, 6000);
   }
-
 }

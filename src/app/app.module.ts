@@ -20,6 +20,8 @@ import { RssFeedComponent } from './components/rss-feed/rss-feed.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerService } from './services/spinner.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -44,9 +46,10 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MatIconModule,
     MatButtonModule,
     LayoutModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ToastrModule.forRoot()
   ],
-  providers: [SpinnerService],
+  providers: [SpinnerService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

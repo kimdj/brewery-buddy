@@ -23,8 +23,8 @@ export class HeaderComponent implements OnInit {
   doSomething(event) {
     this.currentPageYOffset = window.pageYOffset;
 
-    console.log("Scroll Event", window.pageYOffset);
-    console.log("Scroll Event", this.previousPageYOffset);
+    // console.log("Scroll Event", window.pageYOffset);
+    // console.log("Scroll Event", this.previousPageYOffset);
 
     // If scrolling up or at the top, reveal the navbar.  Otherwise, hide it.
     if ((this.previousPageYOffset > window.pageYOffset) || (window.pageYOffset <= 0)) {

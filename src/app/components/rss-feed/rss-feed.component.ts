@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
-import { HttpClient } from "@angular/common/http";
+import { HttpService } from '@app/services/http.service';
 
 interface Beer {
   title:string;
@@ -19,13 +19,13 @@ export class RssFeedComponent implements OnInit{
   beers: Array<Beer>
   
 
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpService) {
     this.beers = new Array();
   }
   ngOnInit(): void {
-    console.log("here");
-    //
-    this.http.get<any>('https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss').subscribe(res =>{
+    console.log("OnInit called in rss-feed");
+    
+    this.http.getRssFeed().subscribe(res =>{
       for(var index in res["items"]){
         const episode = res["items"][index];
         console.log(episode);
@@ -36,6 +36,6 @@ export class RssFeedComponent implements OnInit{
         };
         this.beers.push(beer);
       }
-    })
+    });
   }
 }

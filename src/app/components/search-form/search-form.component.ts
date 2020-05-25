@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 
 @Component({
-  selector: 'input-user-data-form',
+  selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss']
 })
-export class InputUserDataFormComponent implements OnInit {
+export class SearchFormComponent implements OnInit {
   userForm: FormGroup;
   constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({

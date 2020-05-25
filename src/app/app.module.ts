@@ -6,21 +6,29 @@ import { MatSliderModule } from '@angular/material/slider';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { InputUserDataFormComponent } from './search-form/search-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RssComponent } from './rss/rss.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { LayoutModule } from '@angular/cdk/layout';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { SearchFormComponent } from './components/search-form/search-form.component';
+import { RssFeedComponent } from './components/rss-feed/rss-feed.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerService } from './services/spinner.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
     AppComponent,
-    InputUserDataFormComponent,
-    RssComponent
+    SearchFormComponent,
+    HeaderComponent,
+    FooterComponent,
+    RssFeedComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -35,9 +43,10 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    LayoutModule
+    LayoutModule,
+    NgxSpinnerModule
   ],
-  providers: [],
+  providers: [SpinnerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

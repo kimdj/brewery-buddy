@@ -1,45 +1,33 @@
 <div class="container-fluid">
 
-  <!-- Header info -->
-  <div class="row">
-    <div class="col-12">
-      <header id="header" class="jumbotron p-2">
-        <h1 class="text-center">Brewary Buddy</h1>
-      </header>
-    </div>
-  </div>
+    <!-- Header info -->
+    <app-header></app-header>
 
-  <!-- Main info -->
-  <div class="row">
+    <!-- Main info -->
+    <div class="row">
 
-    <!-- Search and results area-->
-    <div class="col-sm-8">
-      <main id="main" class="container-fluid bg-light">
-        <div id="searchArea" class="col-md-12">
-          <h3 class="row text-center">Beer Finder</h3>
-          <div class="row">
-            <input-user-data-form></input-user-data-form>
-          </div>
+        <!-- Search and results area-->
+        <div class="col-sm-8">
+            <main id="main" class="container-fluid bg-light">
+                <div id="searchArea" class="col-md-12">
+                    <h3 class="row text-center">Beer Finder</h3>
+                    <div class="row">
+                        <app-search-form></app-search-form>
+                    </div>
+                </div>
+
+            </main>
         </div>
- 
-      </main>
-    </div>
-    
-    <!-- Rss feed area-->
-    <div class="col-md-4">
-      <aside id="aside" class="bg-light">
-        <app-rss></app-rss>
-      </aside>
-    </div>
-  </div>
 
-  <!-- Footer info -->
-  <div class="row">
-    <div class="col-12">
-      <footer id="footer" class="jumbotron p-2">
-        <p class="text-center">Kim-Devlin L.L.C.</p>
-      </footer>
+        <!-- Rss feed area-->
+        <div class="col-md-4">
+            <aside id="aside" class="bg-light">
+                <app-rss-feed></app-rss-feed>
+            </aside>
+        </div>
     </div>
-  </div>
+
+    <!-- Footer info -->
+    <app-footer></app-footer>
 </div>
 <router-outlet></router-outlet>

@@ -11,11 +11,11 @@ interface Beer {
 }
 
 @Component({
-  selector: 'app-rss',
-  templateUrl: './rss.component.html',
-  styleUrls: ['./rss.component.scss']
+  selector: 'app-rss-feed',
+  templateUrl: './rss-feed.component.html',
+  styleUrls: ['./rss-feed.component.scss']
 })
-export class RssComponent implements OnInit{
+export class RssFeedComponent implements OnInit{
   beers: Array<Beer>
   
 

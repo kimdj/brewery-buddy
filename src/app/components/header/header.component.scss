@@ -8,7 +8,7 @@
 }
 
 .header-row {
-    background: #6A2868;
+    background: rgb(45, 97, 187);
     color: #fff;
     height: 100px;
     display: flex;
@@ -17,7 +17,7 @@
 }
 
 .header-row-sm {
-    background: #6A2868;
+    background: rgb(45, 97, 187);
     color: #fff;
     height: 50px;
     display: flex;
@@ -95,7 +95,7 @@ a.mx-4 {
     width: 100%; // Full width
     transition: top 0.3s; // Transition effect when sliding down (and up) */
     max-height: 500px;
-    background: #6A2868;
+    background: rgb(45, 97, 187);
 }
 
 a:link.nav-link.mx-4 {

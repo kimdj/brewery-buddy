@@ -1,7 +1,97 @@
-<div class="row">
-    <div class="col-12">
-        <header id="header" class="jumbotron p-2">
-            <h1 class="text-center">Brewery Buddy</h1>
-        </header>
+<!-- DEFAULT HEADER -->
+<div *ngIf="innerWidth > 812" class="jumbotron jumbotron-fluid fixed-top bg-white text-black" [ngClass]="currentPageYOffset <= 100 ? 'jumbotron' : 'jumbotron-sm'" id="default-header">
+
+    <!-- UPPER HEADER / LOWER LAYER -->
+    <div *ngIf="innerWidth > 1000" class="row " id="lower-layer">
+
+        <!-- GRUBHUB -->
+        <div *ngIf="innerWidth > 950" class="col-lg-5" style="vertical-align: top; text-align: right; margin: 12px;">
+            <h3 href="https://www.beeradvocate.com/beer/profile/28743/415823/"> Beer of the Day: Stardust </h3>
+        </div>
+
+        <div class="col-lg-1"></div>
+
+        <!-- SOCIAL MEDIA -->
+        <div class="col-lg-3 mx-auto" style="text-align: left">
+            <a href="https://www.yelp.com/biz/dus-grill-portland/">
+                <img src="assets/img/yelp.png" height="40px" width="40px" style="margin: 13px 0 0 0">
+            </a>
+            <a href="https://www.facebook.com/dusgrill/">
+                <img src="assets/img/facebook.png" height="40px" width="20px" style="margin: 13px 0 0 15px">
+            </a>
+            <a href="https://www.instagram.com/dusgrill/">
+                <img src="assets/img/instagram.png" height="40px" width="40px" style="margin: 14px 0 0 15px">
+            </a>
+            <a href="https://twitter.com/dusgrill?lang=en">
+                <img src="assets/img/twitter.png" height="40px" width="40px" style="margin: 14px 0 0 15px">
+            </a>
+        </div>
+
+        <div class="col-lg-3"></div>
+
     </div>
+
+    <!-- LOWER HEADER / UPPER LAYER -->
+    <nav class="navbar navbar-expand-md fixed-top container-fluid" [ngClass]="currentPageYOffset <= 100 ? 'header-row' : 'header-row-sm'" style="margin-top: 65px" id="upper-layer">
+
+        <!-- LEFT LINKS -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <h3 href="#menu" class="nav-link mx-4"> Menu </h3>
+                </li>
+                <li class="nav-item">
+                    <h3 href="#locations" class="nav-link mx-4"> Locations </h3>
+                </li>
+            </ul>
+        </div>
+
+        <!-- DUS LOGO -->
+        <ng-container *ngIf="currentPageYOffset <= 100; else dusLogoSm">
+            <img class="collapse navbar-collapse img-logo" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
+        </ng-container>
+        <ng-template #dusLogoSm>
+            <img class="collapse navbar-collapse img-logo-sm" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
+        </ng-template>
+
+        <!-- RIGHT LINKS -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <h3 href="#food" class="nav-link mx-4"> Food </h3>
+                </li>
+                <li class="nav-item">
+                    <h3 href="#contact" class="nav-link mx-4"> Contact </h3>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
+
+<!-- MOBILE HEADER -->
+<nav *ngIf="innerWidth <= 812" class="navbar navbar-expand-sm fixed-top scrollmenu" [style.top]="isMobileHeaderHidden" id="mobile-header">
+
+    <!-- HAMBURGER MENU -->
+    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+       <mat-icon [ngStyle]="{'color':'white'}"> menu </mat-icon>
+   </button>
+
+    <!-- LINKS -->
+    <div class="collapse navbar-collapse ml-auto" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto mx-auto">
+            <li class="nav-item active">
+                <a href="#menu" class="nav-link mx-4"> Menu </a>
+            </li>
+            <li class="nav-item">
+                <a href="#locations" class="nav-link mx-4"> Locations </a>
+            </li>
+            <li class="nav-item">
+                <a href="#food" class="nav-link mx-4"> Food </a>
+            </li>
+            <li class="nav-item">
+                <a href="#contact" class="nav-link mx-4"> Contact </a>
+            </li>
+        </ul>
+    </div>
+
+</nav>

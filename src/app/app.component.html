@@ -1,33 +1,49 @@
 <div class="container-fluid">
 
-    <!-- Header info -->
+    <!-- HEADER -->
     <app-header></app-header>
 
-    <!-- Main info -->
-    <div class="row">
+    <!-- FIRST SECTION -->
+    <main role="main" class="container" [ngStyle]="{'margin-top': innerWidth > 812 ? '270px' : '0px'}">
 
-        <!-- Search and results area-->
-        <div class="col-sm-8">
-            <main id="main" class="container-fluid bg-light">
-                <div id="searchArea" class="col-md-12">
-                    <h3 class="row text-center">Beer Finder</h3>
-                    <div class="row">
-                        <app-search-form></app-search-form>
+        <!-- MOBILE LOGO -->
+        <div *ngIf="innerWidth <= 812" class="row">
+            <div class="col-lg-12">
+
+                <!-- LOGO -->
+                <img class="img-logo-2" src="assets/img/dus-logo-2.png" href="#">
+
+            </div>
+        </div>
+
+        <!-- MAIN COLUMN -->
+        <div class="row">
+
+            <!-- LEFT COLUMN (SEARCH + RESULTS AREA) -->
+            <div class="col-sm-8">
+                <main id="main" class="container-fluid bg-light">
+                    <div id="searchArea" class="col-md-12">
+                        <h3 class="row text-center"> Beer Finder </h3>
+                        <div class="row">
+                            <app-search-form></app-search-form>
+                        </div>
                     </div>
-                </div>
 
-            </main>
+                </main>
+            </div>
+
+            <!-- RIGHT COLUMN (RSS FEED) -->
+            <div class="col-md-4">
+                <aside id="aside" class="bg-light">
+                    <app-rss-feed></app-rss-feed>
+                </aside>
+            </div>
+
         </div>
+    </main>
 
-        <!-- Rss feed area-->
-        <div class="col-md-4">
-            <aside id="aside" class="bg-light">
-                <app-rss-feed></app-rss-feed>
-            </aside>
-        </div>
-    </div>
-
-    <!-- Footer info -->
+    <!-- FOOTER -->
     <app-footer></app-footer>
+
 </div>
 <router-outlet></router-outlet>

@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { HttpClient } from "@angular/common/http";
+import { GeolocationService } from '../geoloction.service';
 
 interface Beer {
   title:string;
@@ -15,20 +16,17 @@ interface Beer {
   templateUrl: './rss-feed.component.html',
   styleUrls: ['./rss-feed.component.scss']
 })
-export class RssFeedComponent implements OnInit{
-  beers: Array<Beer>
-  
+export class RssComponent implements OnInit{
+  beers: Array<Beer>;
+  curCoords: any;
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private geolocation: GeolocationService) {
     this.beers = new Array();
   }
   ngOnInit(): void {
-    console.log("here");
-    //
     this.http.get<any>('https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss').subscribe(res =>{
       for(var index in res["items"]){
         const episode = res["items"][index];
-        console.log(episode);
         const beer: Beer ={
           title: episode["title"],
           link: episode["link"],
@@ -37,5 +35,10 @@ export class RssFeedComponent implements OnInit{
         this.beers.push(beer);
       }
     })
+    this.geolocation.getLocation().subscribe(res =>{
+      console.log(res.coords);
+      this.curCoords = res.coords;
+    });
   }
+
 }

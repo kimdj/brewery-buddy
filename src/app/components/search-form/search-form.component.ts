@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { GeolocationService } from '../geoloction.service';
 
 @Component({
   selector: 'app-search-form',
@@ -8,21 +9,25 @@ import { FormBuilder, FormGroup, FormControl, Validators, ValidatorFn } from '@a
 })
 export class SearchFormComponent implements OnInit {
   userForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) {
+  curCoords: any;
+
+  constructor(private formBuilder: FormBuilder, private geolocation: GeolocationService) {
     this.userForm = this.formBuilder.group({
   		searchType: [null],
       searchCriteria: [null,Validators.minLength(1)]},
       {validator: searchTypeValidator}
-  	);
+    );
   }
-
   ngOnInit(): void {
+    this.geolocation.getLocation().subscribe(res =>{
+      console.log(res.coords);
+      this.curCoords = res.coords;
+    });
   }
+  
   onSubmit(){
-    console.log(this.userForm);
     if(this.userForm.valid ){
       console.log("valid");
-      return;
     }else{
       console.log("invalid");
     }

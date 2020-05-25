@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
   constructor(private spinner: SpinnerService,
               private sanitizer: DomSanitizer,
               private notifier: NotificationService,
-              private http: HttpService) {}
+              private http: HttpService) { }
 
   ngOnInit() {
     let foo = this.http.getBreweries().subscribe((data) => {
@@ -54,10 +54,10 @@ export class AppComponent implements OnInit {
       console.log(data);
     });
 
-    let beers = this.http.getBeers().subscribe((data) => {
-      console.log('getBeers() data:');
-      console.log(data);
-    });
+    // let beers = this.http.getBeers().subscribe((data) => {
+    //   console.log('getBeers() data:');
+    //   console.log(data);
+    // });
 
     this.innerWidth = window.innerWidth;
     // this.spinner.on();
@@ -71,4 +71,6 @@ export class AppComponent implements OnInit {
     //   this.notifier.showWarning('foo', 'bar');
     // }, 4000);
   }
+
+
 }

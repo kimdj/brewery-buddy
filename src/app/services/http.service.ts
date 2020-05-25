@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { environment } from '@app/../environments/environment';
 
-const apiKey = environment.brewerydb.apiKey;
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -36,9 +34,9 @@ export class HttpService {
 
   /*****  Brewery DB  *****/
 
-  getBeers() {
-    return this.httpClient.get(`http://api.brewerydb.com/v2/beers/?key=${apiKey}`);
-  }
+  // getBeers() {
+  //   return this.httpClient.get(`http://api.brewerydb.com/v2/beers/?key=${apiKey}`);
+  // }
 
   /*****  Google Maps  *****/
 

@@ -4,7 +4,7 @@
     <app-header></app-header>
 
     <!-- FIRST SECTION -->
-    <main role="main" class="container" [ngStyle]="{'margin-top': innerWidth > 812 ? '270px' : '100px'}">
+    <main role="main" class="container-fluid mx-2" [ngStyle]="{'margin-top': innerWidth > 812 ? '270px' : '100px'}">
 
         <!-- MAIN COLUMN -->
         <div class="row">
@@ -14,11 +14,8 @@
                 <main id="main" class="container-fluid bg-light">
                     <div id="searchArea" class="col-md-12">
                         <h3 class="row text-center"> Beer Finder </h3>
-                        <div class="row">
-                            <app-search-form></app-search-form>
-                        </div>
+                        <app-search-form></app-search-form>
                     </div>
-
                 </main>
             </div>
 

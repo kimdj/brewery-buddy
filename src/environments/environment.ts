@@ -4,9 +4,6 @@
 
 export const environment = {
   production: false,
-  brewerydb: {
-    apiKey: process.env.apiKey
-  }
 };
 
 /*

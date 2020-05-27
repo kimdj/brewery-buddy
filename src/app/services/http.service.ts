@@ -5,6 +5,8 @@ import { HttpHeaders } from '@angular/common/http';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'http://127.0.0.1:4200',
+    'Access-Control-Allow-Methods': 'GET',
   }),
   withCredentials: true,
 };
@@ -38,6 +40,11 @@ export class HttpService {
   //   return this.httpClient.get(`http://api.brewerydb.com/v2/beers/?key=${apiKey}`);
   // }
 
+  getCloseBrewery(){
+    var apiKey = "28ee4c03a50f079cc0e8656be8e5a391";
+    var proxy = 'https://cors-anywhere.herokuapp.com/';
+    return this.httpClient.get(`http://api.brewerydb.com/v2/search/geo/point?lat=35.772096&lng=-78.638614?key=${apiKey}`, httpOptions);
+  }
   /*****  Google Maps  *****/
 
 }

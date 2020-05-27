@@ -1,8 +1,11 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SpinnerService } from './services/spinner.service';
 import { NotificationService } from './services/notification.service';
 import { HttpService } from './services/http.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +20,11 @@ export class AppComponent implements OnInit {
   previousPageYOffset = 0;
   currentPageYOffset = window.pageYOffset;
   
+  displayedColumns: string[] = ['id', 'name', 'progress', 'color'];
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
@@ -50,6 +58,4 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.innerWidth = window.innerWidth;
   }
-
-
 }

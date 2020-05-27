@@ -34,9 +34,9 @@ export class HttpService {
 
   /*****  Brewery DB  *****/
 
-  // getBeers() {
-  //   return this.httpClient.get(`http://api.brewerydb.com/v2/beers/?key=${apiKey}`);
-  // }
+  getBeers() {
+    return this.httpClient.get('http://localhost:8080/get-beers');
+  }
 
   /*****  Google Maps  *****/
 

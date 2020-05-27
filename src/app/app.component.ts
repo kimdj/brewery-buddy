@@ -48,28 +48,7 @@ export class AppComponent implements OnInit {
               private http: HttpService) { }
 
   ngOnInit() {
-    let foo = this.http.getBreweries().subscribe((data) => {
-      this.notifier.showInfo('foo', 'bar');
-      console.log('getBreweries() data:');
-      console.log(data);
-    });
-
-    // let beers = this.http.getBeers().subscribe((data) => {
-    //   console.log('getBeers() data:');
-    //   console.log(data);
-    // });
-
     this.innerWidth = window.innerWidth;
-    // this.spinner.on();
-    // setTimeout(() => {
-    //   this.notifier.showSuccess('foo', 'bar');
-    // }, 0);
-    // setTimeout(() => {
-    //   this.notifier.showError('foo', 'bar');
-    // }, 2000);
-    // setTimeout(() => {
-    //   this.notifier.showWarning('foo', 'bar');
-    // }, 4000);
   }
 
 

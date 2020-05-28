@@ -43,7 +43,7 @@ export class RssFeedComponent implements OnInit{
       console.log(res.coords);
       this.curCoords = res.coords;
     });
-    this.http.getCloseBrewery().subscribe(res =>{
+    this.http.getCloseBreweries().subscribe(res =>{
       console.log(res);
     });
   }

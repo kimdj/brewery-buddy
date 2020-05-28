@@ -39,19 +39,6 @@ app.get('/', function(req, res) {
 });
 
 app.get('/get-beers', function(req, res) {
-    // // callback
-    // superagent
-    //     .get(`http://api.brewerydb.com/v2/beers/?key=${process.env.API_KEY}`)
-    //     .then(_res => {
-    //         // res.body, res.headers, res.status
-    //         console.log(_res.status);
-    //         res.send(_res.body);
-    //     })
-    //     .catch(err => {
-    //         // err.message, err.response
-    //         console.log(err.message);
-    //     });
-
     // promise with async/await
     (async() => {
         try {
@@ -64,28 +51,17 @@ app.get('/get-beers', function(req, res) {
     })();
 });
 
-// // callback
-// superagent
-//     .get('/api/beers')
-//     .send({ name: 'Manny', species: 'cat' }) // sends a JSON post body
-//     .set('X-API-Key', 'foobar')
-//     .set('accept', 'json')
-//     .end((err, res) => {
-//         // Calling the end function will send the request
-//     });
-
-// // promise with then/catch
-// superagent.post('/api/pet').then(console.log).catch(console.error);
-
-// // promise with async/await
-// (async() => {
-//     try {
-//         const res = await superagent.post('/api/pet');
-//         console.log(res);
-//     } catch (err) {
-//         console.error(err);
-//     }
-// })();
+app.get('/get-breweries', function(req, res) {
+    (async() => {
+        try {
+            const _res = await superagent.get(`http://api.brewerydb.com/v2/search/geo/point?lat=35.772096&lng=-78.638614?key=28ee4c03a50f079cc0e8656be8e5a391`);
+            console.log(_res.status);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
 
 // Start the app by listening on the default
 // Heroku port

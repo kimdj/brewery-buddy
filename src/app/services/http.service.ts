@@ -40,7 +40,7 @@ export class HttpService {
   getCloseBrewery(){
     var apiKey = "28ee4c03a50f079cc0e8656be8e5a391";
     var proxy = 'https://cors-anywhere.herokuapp.com/';
-    return this.httpClient.get(`${proxy}http://api.brewerydb.com/v2/search/geo/point?lat=35.772096&lng=-78.638614?key=${apiKey}`, httpOptions);
+    return this.http.get(`http://api.brewerydb.com/v2/search/geo/point?lat=35.772096&lng=-78.638614?key=${apiKey}`, httpOptions);
   }
   /*****  Google Maps  *****/
 

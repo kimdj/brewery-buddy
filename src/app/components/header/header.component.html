@@ -46,11 +46,11 @@
             </ul>
         </div>
 
-        <!-- DUS LOGO -->
-        <ng-container *ngIf="currentPageYOffset <= 100; else dusLogoSm">
+        <!-- LOGO -->
+        <ng-container *ngIf="currentPageYOffset <= 100; else logoSm">
             <img class="collapse navbar-collapse img-logo" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
         </ng-container>
-        <ng-template #dusLogoSm>
+        <ng-template #logoSm>
             <img class="collapse navbar-collapse img-logo-sm" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
         </ng-template>
 

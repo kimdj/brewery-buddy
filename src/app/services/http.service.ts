@@ -12,30 +12,30 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private httpClient: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
   testAPI() {
-    return this.httpClient.get('https://restcountries.eu/rest/v2/all');
+    return this.http.get('https://restcountries.eu/rest/v2/all');
   }
 
   /*****  RSS Feed  *****/
   
   getRssFeed() {
-    return this.httpClient.get('https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss');
+    return this.http.get('https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss');
   }
 
   /*****  Open Brewery DB  *****/
 
   getBreweries() {
-    return this.httpClient.get('https://api.openbrewerydb.org/breweries');
+    return this.http.get('https://api.openbrewerydb.org/breweries');
   }
 
   /*****  Brewery DB  *****/
 
-  // getBeers() {
-  //   return this.httpClient.get(`http://api.brewerydb.com/v2/beers/?key=${apiKey}`);
-  // }
+  getBeers() {
+    return this.http.get('/get-beers');
+  }
 
   getCloseBrewery(){
     var apiKey = "28ee4c03a50f079cc0e8656be8e5a391";

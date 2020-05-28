@@ -4,7 +4,7 @@
     <app-header></app-header>
 
     <!-- FIRST SECTION -->
-    <main role="main" class="container" [ngStyle]="{'margin-top': innerWidth > 812 ? '270px' : '100px'}">
+    <main role="main" class="container-fluid mx-2" [ngStyle]="{'margin-top': innerWidth > 812 ? '270px' : '100px'}">
 
         <!-- MAIN COLUMN -->
         <div class="row">
@@ -14,52 +14,8 @@
                 <main id="main" class="container-fluid bg-light">
                     <div id="searchArea" class="col-md-12">
                         <h3 class="row text-center"> Beer Finder </h3>
-                        <div class="row">
-                            <app-search-form></app-search-form>
-                        </div>
+                        <app-search-form></app-search-form>
                     </div>
-                    <div id="resultsArea" class="col-md-12">
-                        <mat-form-field>
-                            <mat-label>Filter</mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
-                        </mat-form-field>
-
-                        <div class="mat-elevation-z8">
-                            <table mat-table [dataSource]="dataSource" matSort>
-
-                                <!-- ID Column -->
-                                <ng-container matColumnDef="id">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-                                </ng-container>
-
-                                <!-- Progress Column -->
-                                <ng-container matColumnDef="progress">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
-                                </ng-container>
-
-                                <!-- Name Column -->
-                                <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-                                </ng-container>
-
-                                <!-- Color Column -->
-                                <ng-container matColumnDef="color">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
-                                    <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </td>
-                                </ng-container>
-
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-                                </tr>
-                            </table>
-
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-                        </div>
-                    </div>
-
                 </main>
             </div>
 

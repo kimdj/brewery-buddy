@@ -22,18 +22,33 @@ export class RssFeedComponent implements OnInit{
     this.breweries = new Array();
   }
   ngOnInit(): void {
+    var lat = "39.7236683";
+    var long = "-105.0006015";
 
-    this.http.getCloseBreweries("abc", "123").subscribe(res =>{
-      console.log(res);
-      for(var index in res["data"]){
-        const curRow = res["data"][index];
-        const brewery: Brewery ={
-          name: curRow["brewery"]["name"],
-          website: curRow["website"]
-        };
-        this.breweries.push(brewery);
-      }
+    this.geolocation.getLocation().subscribe(res =>{
+      var curCoords = res.coords;
+      this.http.getCloseBreweries(curCoords.latitude, curCoords.longitude).subscribe(res =>{
+        console.log(res);
+        if(res["data"] === undefined){
+          this.http.getCloseBreweries(lat, long).subscribe(res =>{
+            this.populateCloseBreweries(res["data"]);
+          });
+        }else{
+          this.populateCloseBreweries(res["data"]);
+        }
+        
+      });
     });
-    
+  }
+
+  populateCloseBreweries(data): void{
+    for(var index in data){
+      const curRow = data[index];
+      const brewery: Brewery ={
+        name: curRow["brewery"]["name"],
+        website: curRow["website"]
+      };
+      this.breweries.push(brewery);
+    }
   }
 }

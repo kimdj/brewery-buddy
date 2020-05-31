@@ -57,9 +57,7 @@ app.get('/get-breweriesClose', function(req, res) {
     (async() => {
         try {
             lat = req.query.Latitude;
-            lat = "39.7236683";
             long = req.query.Longitude;
-            long = "-105.0006015";
             
             const _res = await superagent.get(`http://sandbox-api.brewerydb.com/v2/search/geo/point/?lat=${lat}&lng=${long}&radius=100&key=72ecc65c3433b5fb3b6e7ea793910c51`);
             console.log(_res.status);

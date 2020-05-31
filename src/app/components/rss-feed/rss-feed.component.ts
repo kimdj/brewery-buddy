@@ -22,6 +22,7 @@ export class RssFeedComponent implements OnInit{
     this.breweries = new Array();
   }
   ngOnInit(): void {
+    // Default to denver, because I know it will work:)
     var lat = "39.7236683";
     var long = "-105.0006015";
 
@@ -42,7 +43,7 @@ export class RssFeedComponent implements OnInit{
   }
 
   populateCloseBreweries(data): void{
-    for(var index in data){
+    for(var index in data.slice(0, 5)){
       const curRow = data[index];
       const brewery: Brewery ={
         name: curRow["brewery"]["name"],

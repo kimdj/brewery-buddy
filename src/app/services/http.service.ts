@@ -27,9 +27,9 @@ export class HttpService {
 
   /*****  Open Brewery DB  *****/
 
-  getBreweries() {
-    return this.http.get('https://api.openbrewerydb.org/breweries');
-  }
+  // getBreweries() {
+  //   return this.http.get('https://api.openbrewerydb.org/breweries');
+  // }
 
   /*****  Brewery DB  *****/
 
@@ -37,8 +37,8 @@ export class HttpService {
     return this.http.get('/get-beers');
   }
 
-  getCloseBreweries(){
-    return this.http.get('/get-breweries');
+  getCloseBreweries(lat, long){
+    return this.http.get(`/get-breweriesClose?Latitude=${lat}&Longitude=${long}`);
   }
   /*****  Google Maps  *****/
 

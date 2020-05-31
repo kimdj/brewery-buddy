@@ -35,6 +35,7 @@ app.use(express.static(__dirname + '/dist'));
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used
 app.get('/', function(req, res) {
+    console.log("defg");
     res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
@@ -42,7 +43,8 @@ app.get('/get-beers', function(req, res) {
     // promise with async/await
     (async() => {
         try {
-            const _res = await superagent.get(`http://api.brewerydb.com/v2/beers/?key=${process.env.API_KEY}`);
+            // const _res = await superagent.get(`http://api.brewerydb.com/v2/beers/?key=${process.env.API_KEY}`);
+            const _res = await superagent.get(`http://sandbox-api.brewerydb.com/v2/beers/?key=72ecc65c3433b5fb3b6e7ea793910c51`);
             console.log(_res.status);
             res.send(_res.body);
         } catch (err) {
@@ -51,10 +53,15 @@ app.get('/get-beers', function(req, res) {
     })();
 });
 
-app.get('/get-breweries', function(req, res) {
+app.get('/get-breweriesClose', function(req, res) {
     (async() => {
         try {
-            const _res = await superagent.get(`http://api.brewerydb.com/v2/search/geo/point?lat=35.772096&lng=-78.638614?key=28ee4c03a50f079cc0e8656be8e5a391`);
+            lat = req.query.Latitude;
+            lat = "39.7236683";
+            long = req.query.Longitude;
+            long = "-105.0006015";
+            
+            const _res = await superagent.get(`http://sandbox-api.brewerydb.com/v2/search/geo/point/?lat=${lat}&lng=${long}&radius=100&key=72ecc65c3433b5fb3b6e7ea793910c51`);
             console.log(_res.status);
             res.send(_res.body);
         } catch (err) {
@@ -62,6 +69,7 @@ app.get('/get-breweries', function(req, res) {
         }
     })();
 });
+
 
 // Start the app by listening on the default
 // Heroku port

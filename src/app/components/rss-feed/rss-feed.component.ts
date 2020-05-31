@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { HttpService } from '@app/services/http.service';
-import { HttpClient } from "@angular/common/http";
 import { GeolocationService } from '@app/services/geoloction.service';
 
-interface Beer {
-  title:string;
-  link:string;
-  published:string;
+interface Brewery {
+  name:string;
+  website:string;
 }
 
 @Component({
@@ -18,34 +15,25 @@ interface Beer {
   styleUrls: ['./rss-feed.component.scss']
 })
 export class RssFeedComponent implements OnInit{
-  beers: Array<Beer>;
-  curCoords: any;
+  breweries: Array<Brewery>;
 
   constructor(private http: HttpService,
               private geolocation: GeolocationService) {
-    this.beers = new Array();
+    this.breweries = new Array();
   }
   ngOnInit(): void {
-    console.log("OnInit called in rss-feed");
-    
-    this.http.getRssFeed().subscribe(res =>{
-      for(var index in res["items"]){
-        const episode = res["items"][index];
-        const beer: Beer ={
-          title: episode["title"],
-          link: episode["link"],
-          published: episode["{{beer.description}}"]
-        };
-        this.beers.push(beer);
-      }
-    })
-    this.geolocation.getLocation().subscribe(res =>{
-      console.log(res.coords);
-      this.curCoords = res.coords;
-    });
-    this.http.getCloseBreweries().subscribe(res =>{
-      console.log(res);
-    });
-  }
 
+    this.http.getCloseBreweries("abc", "123").subscribe(res =>{
+      console.log(res);
+      for(var index in res["data"]){
+        const curRow = res["data"][index];
+        const brewery: Brewery ={
+          name: curRow["brewery"]["name"],
+          website: curRow["website"]
+        };
+        this.breweries.push(brewery);
+      }
+    });
+    
+  }
 }

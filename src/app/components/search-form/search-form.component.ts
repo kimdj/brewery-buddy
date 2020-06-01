@@ -23,29 +23,31 @@ export class SearchFormComponent implements OnInit {
   userForm: FormGroup;
   curCoords: any;
 
-  // cols = [
-  //   {
-  //     name: 'id',
-  //     header: 'ID',
-  //   },
-  //   {
-  //     name: 'name',
-  //     header: 'Name',
-  //   },
-  //   {
-  //     name: 'abv',
-  //     header: 'ABV',
-  //   },
-  //   {
-  //     name: 'styleId',
-  //     header: 'Style ID',
-  //   },
-  //   {
-  //     name: 'status',
-  //     header: 'Status',
-  //   },
-  // ];
+  // Beer specific view
+  cols = [
+    {
+      name: 'id',
+      header: 'ID',
+    },
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'abv',
+      header: 'ABV',
+    },
+    {
+      name: 'styleId',
+      header: 'Style ID',
+    },
+    {
+      name: 'status',
+      header: 'Status',
+    },
+  ];
 
+  // Brewery Specific view
   colsBrewery = [
     {
       name: 'name',
@@ -53,11 +55,13 @@ export class SearchFormComponent implements OnInit {
     },
     {
       name: 'website',
-      header: "Website"
+      header: "website"
     }
   ]
 
-  displayedColumns: string[] = this.colsBrewery.map((e) => e.name);
+  // Used to track what wer are currently displaying
+  curCols = this.cols;
+  displayedColumns: string[] = this.curCols.map((e) => e.name);
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   myData: any = [];
 
@@ -75,29 +79,37 @@ export class SearchFormComponent implements OnInit {
         searchType: new FormControl('', Validators.required),
         searchCriteria: new FormControl('', Validators.required)
       }
-      // {
-      //   validator: searchTypeValidator,
-      // }
     );
   }
 
   ngOnInit(): void {
-    this.geolocation.getLocation().subscribe((res) => {
-      console.log(res.coords);
-      this.curCoords = res.coords;
+    // Get beer info
+    this.http.getBeers().subscribe((data: any) => {
+      console.log('beers:');
+      console.log(data);
+      this.dataSource = new MatTableDataSource(data.data);
     });
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    // Find where the user is hiding
+    this.geolocation.getLocation().subscribe((res) => {
+      console.log(res.coords);
+      this.curCoords = res.coords;
+    });
   }
 
   onSubmit() {
       var searchType = this.userForm.get('searchType').value;
       var searchCriteria = this.userForm.get('searchCriteria').value;
+      
+      // For keyword only searches, just want to know all beers that match
       if(searchType === "Keyword"){
         this.http.getBreweriesKeyword(searchCriteria).subscribe((data: any) => {
           console.log(data.data);
-          this.displayedColumns = this.colsBrewery.map((e) => e.name);
+          this.curCols = this.colsBrewery;
+          this.displayedColumns = this.curCols.map((e) => e.name);
           this.dataSource = new MatTableDataSource(data.data);
         });
       }
@@ -112,13 +124,3 @@ export class SearchFormComponent implements OnInit {
     }
   }
 }
-
-// const searchTypeValidator: ValidatorFn = (fg: FormGroup) => {
-//   const type = fg.get('searchType').value;
-//   const searchCondiion = fg.get('searchCriteria').value;
-//   if (type === 'Keyword') {
-//     return { searchTypeValidator: true };
-//   }else if(type === 'Default'){
-//     return { searchTypeValidator: true };
-//   }
-// };

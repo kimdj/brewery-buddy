@@ -20,8 +20,8 @@ app.get('/', function(req, res) {
 });
 
 
-//const breweryDBURL = "http://api.brewerydb.com/v2";
-const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
+const breweryDBURL = "http://api.brewerydb.com/v2";
+//const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
 
 app.get('/get-beers', function(req, res) {
     // promise with async/await

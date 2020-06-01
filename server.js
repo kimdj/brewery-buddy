@@ -20,8 +20,8 @@ app.get('/', function(req, res) {
 });
 
 
-const breweryDBURL = "http://api.brewerydb.com/v2";
-//const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
+//const breweryDBURL = "http://api.brewerydb.com/v2";
+const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
 
 app.get('/get-beers', function(req, res) {
     // promise with async/await
@@ -36,6 +36,7 @@ app.get('/get-beers', function(req, res) {
     })();
 });
 
+// Find breweries in a certain radius of a loaction
 app.get('/get-breweriesClose', function(req, res) {
     (async() => {
         try {
@@ -43,6 +44,21 @@ app.get('/get-breweriesClose', function(req, res) {
             long = req.query.Longitude;
             
             const _res = await superagent.get(`${breweryDBURL}/search/geo/point/?lat=${lat}&lng=${long}&radius=100&key=${process.env.API_KEY}`);
+            console.log(_res.status);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
+
+// Find breweries based on on a keyword search
+app.get('/get-breweriesKeyword', function(req, res) {
+    (async() => {
+        try {
+            query = req.query.query;
+            
+            const _res = await superagent.get(`${breweryDBURL}/search/?q=${query}&type=brewery&withLocations=Y&withBreweries=Y&key=${process.env.API_KEY}`);
             console.log(_res.status);
             res.send(_res.body);
         } catch (err) {

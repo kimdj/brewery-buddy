@@ -40,6 +40,9 @@ export class HttpService {
   getCloseBreweries(lat, long){
     return this.http.get(`/get-breweriesClose?Latitude=${lat}&Longitude=${long}`);
   }
+  getBreweriesKeyword(searchCriteria){
+    return this.http.get(`/get-breweriesKeyword?query=${searchCriteria}`);
+  }
   /*****  Google Maps  *****/
 
 }

@@ -1,199 +1,212 @@
-  export class Brew{
-    constructor(private name: string){
-    }
-  }
+/***************************************************************
+ 
+        Base Classes.  The singular (Brew) is used to store the
+        Data that is returned from the API request.  The plural
+        (Brews) is sued to handle parsing the data from the API
+        request as well as having header info for displaying
 
-  export class Brews{
-    cols =[
+****************************************************************/
+export class Brew {
+  constructor(private name: string) {}
+}
+
+export class Brews {
+  cols = [
     {
-        name: 'name',
-        header: 'header',
-    }];
+      name: 'name',
+      header: 'header',
+    },
+  ];
 
-    brews: Array<Brew>;
+  // Stores the parsed objects for future use.
+  brews: Array<Brew>;
 
-    constructor(){
-        this.brews = [];
+  constructor() {
+    this.brews = [];
+  }
+
+  // Data is the raw data portion of API request
+  process(data: Array<any>): Array<any> {
+    this.brews = [];
+    for (var index in data) {
+      var newBrew = this.processRow(data[index])
+      this.brews.push(newBrew);
     }
-
-    process(data: Array<any>): Array<any>{
-        this.brews = [];
-        for(var index in data){
-          this.brews.push(data[index]);
-        }
-        return this.brews;
-    }
-
-    processRow(data: any){
-        return new Brew(data["name"])
-    }
+    return this.brews;
   }
 
-  export class Beer extends Brew{
-    constructor(name: string, private id: string,
-         private abv: string, private styleId: string,
-         private status: string){
-        super(name);
-    } 
+  // Creates new object based on each row returned
+  processRow(data: any) {
+    return new Brew(data['name']);
   }
-  export class Beers extends Brews{
-    cols = [
-        {
-          name: 'id',
-          header: 'ID',
-        },
-        {
-          name: 'name',
-          header: 'Name',
-        },
-        {
-          name: 'abv',
-          header: 'ABV',
-        },
-        {
-          name: 'styleId',
-          header: 'Style ID',
-        },
-        {
-          name: 'status',
-          header: 'Status',
-        },
-      ];
-      brews: Array<Beer>;
-    
-      processRow(data: any){
-          return new Beer(data["name"], data["id"], data["abv"],
-           data["styleId"], data["status"]);
-      }
+}
+
+
+/**************************************************************
+ 
+        Beer represents just a beer.  Beers represents a bunch
+        of related beers
+
+**************************************************************/
+
+export class Beer extends Brew {
+  constructor(
+    name: string,
+    private id: string,
+    private abv: string,
+    private styleId: string,
+    private status: string
+  ) {
+    super(name);
   }
+}
 
-  export class Brewery extends Brew{
-    constructor(name: string, private website: string){
-        super(name);
-    } 
+export class Beers extends Brews {
+  cols = [
+    {
+      name: 'id',
+      header: 'ID',
+    },
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'abv',
+      header: 'ABV',
+    },
+    {
+      name: 'styleId',
+      header: 'Style ID',
+    },
+    {
+      name: 'status',
+      header: 'Status',
+    },
+  ];
+  brews: Array<Beer>;
+
+  processRow(data: any) {
+    return new Beer(
+      data['name'],
+      data['id'],
+      data['abv'],
+      data['styleId'],
+      data['status']
+    );
   }
-  export class Breweries extends Brews{
-    cols = [
-        {
-        name: 'name',
-        header: "Name"
-        },
-        {
-        name: 'website',
-        header: "website"
-        }
-    ]
+}
 
-    brews: Array<Brewery>;
+/**************************************************************
+ 
+        Brewery represents a brewery company. It might have many
+        different locations.
+        
+**************************************************************/
 
-    processRow(data: any){
-        return new Brewery(data["name"], data["website"])
-    }
+export class Brewery extends Brew {
+  constructor(name: string, private website: string) {
+    super(name);
   }
+}
+export class Breweries extends Brews {
+  cols = [
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'website',
+      header: 'website',
+    },
+  ];
 
-  export class BeerWithBrewery extends Brew{
-    constructor(
-        name: string,
-        private abv: string,
-        private style: string){
-            super(name);
-        } 
+  brews: Array<Brewery>;
+
+  processRow(data: any) {
+    return new Brewery(data['name'], data['website']);
   }
-  export class BeersWithBreweries extends Brews{
-        cols = [
-        {
-          name: 'name',
-          header: 'Name',
-        },
-        {
-          name: 'abv',
-          header: 'ABV',
-        },
-        {
-          name: 'style',
-          header: 'Style',
-        },
-        // {
-        //   name: 'brewery',
-        //   header: 'Brewery',
-        // },
-        // {
-        //   name: 'website',
-        //   header: 'Website',
-        // },
-      ]
+}
 
-      brews: Array<BeerWithBrewery>;
-    
-      processRow(data: any){
-          return new BeerWithBrewery(data["name"], data["abv"], "test");
-      }
-    //   process(data){
-    //     var toReturn = [];
-    //     for(var index in data){
-    //       const curRow = data[index];
+/**************************************************************
+ 
+        BeerWithBrewery represents a beer that is made by a
+        specific Brewery.
+        
+**************************************************************/
+
+export class BeerWithBrewery extends Brew {
+  constructor(
+    name: string,
+    private abv: string,
+    private style: string,
+    private breweries: Array<Brewery>
+  ) {
+    super(name);
+  }
+  getBreweries(){
+    return this.breweries;
+  }
+}
+export class BeersWithBreweries extends Brews {
+  cols = [
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'abv',
+      header: 'ABV',
+    },
+    {
+      name: 'style',
+      header: 'Style',
+    },
+    {
+      name: 'brewery',
+      header: 'Brewery',
+    },
+    {
+      name: 'website',
+      header: 'Website',
+    },
+  ];
+
+  brews: Array<BeerWithBrewery>;
+
+  process(data: Array<any>): Array<any> {
+    this.brews = [];
+    var toReturn = [];
+    for (var index in data) {
+      const curRow = data[index];
       
-    //       // If they are too lazy to input a style,
-    //       // then they are uninvited from the party
-    //       if(curRow["style"] === undefined){
-    //         continue;
-    //       }
-      
-    //       const breweries = processBreweryList(curRow["breweries"]);
-    //       for(var brewIndex in breweries){
-    //         const curBrewery = breweries[brewIndex]
-    //         const beer: Beer ={
-    //           name: curRow["name"],
-    //           abv: curRow["abv"],
-    //           style: curRow["style"]["shortName"],
-    //           description: curRow["description"],
-    //           brewery: curBrewery,
-    //         };
-    //         toReturn.push(beer);
-    //       }
-    //     }
-    //     return toReturn;
-    // }
+      // If they are too lazy to input a style,
+      // then they are uninvited from the party
+      if(curRow["style"] === undefined){
+        continue;
+      }     
+
+      var newBeer = this.processRow(curRow);
+      this.brews.push(newBeer);
+
+      // Data chart does not understand nested structures,
+      // so we have to flatten the sub-breweries
+      newBeer.getBreweries().forEach((brewery) =>{
+        toReturn.push({
+          name : newBeer["name"],
+          abv : newBeer["abv"],
+          style: newBeer["style"],
+          brewery: brewery["name"],
+          website: brewery["website"]
+        });
+      });
+    }
+    return toReturn;
   }
-// // Convert beer list from API to list of Beer objects
-// function processBeerList(data){
-//     var toReturn = [];
-//     for(var index in data){
-//       const curRow = data[index];
-  
-//       // If they are too lazy to input a style,
-//       // then they are uninvited from the party
-//       if(curRow["style"] === undefined){
-//         continue;
-//       }
-  
-//       const breweries = processBreweryList(curRow["breweries"]);
-//       for(var brewIndex in breweries){
-//         const curBrewery = breweries[brewIndex]
-//         const beer: Beer ={
-//           name: curRow["name"],
-//           abv: curRow["abv"],
-//           style: curRow["style"]["shortName"],
-//           description: curRow["description"],
-//           brewery: curBrewery,
-//         };
-//         toReturn.push(beer);
-//       }
-//     }
-//     return toReturn;
-//   }
-  
-//   // Convert brewery list from API to list of Brewery objects
-//   function processBreweryList(data){
-//     var toReturn = [];
-//     for(var index in data){
-//       const curRow = data[index];
-//       const brewery: Brewery ={
-//         name: curRow["name"],
-//         website: curRow["website"],
-//         description: curRow["description"],
-//       }
-//       toReturn.push(brewery);
-//     }
-//     return toReturn;
-//   }
+
+  processRow(data: any) {
+    const breweries = new Breweries();
+    var results = breweries.process(data['breweries']);
+    return new BeerWithBrewery(data['name'], data['abv'], data["style"]["shortName"], results);
+  }
+}

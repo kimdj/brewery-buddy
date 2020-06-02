@@ -18,7 +18,7 @@ import {
   Beers,
   Breweries,
   BeersWithBreweries,
-} from '@app/models/BrewTypes';
+} from '@app/models/brewTypes';
 
 @Component({
   selector: 'app-search-form',

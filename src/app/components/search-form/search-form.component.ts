@@ -14,6 +14,20 @@ import { GeolocationService } from '@app/services/geoloction.service';
 import { HttpService } from '@app/services/http.service';
 import { NotificationService } from '@app/services/notification.service';
 
+interface Brewery{
+  name: string;
+  website: string;
+  description: string;
+}
+interface Beer{
+  name: string;
+  abv: string;
+  style: string;
+  description: string;
+  brewery: string;
+  website: string;
+}
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
@@ -57,6 +71,29 @@ export class SearchFormComponent implements OnInit {
       name: 'website',
       header: "website"
     }
+  ]
+
+  colsBeersAtBrewery = [
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'abv',
+      header: 'ABV',
+    },
+    {
+      name: 'style',
+      header: 'Style',
+    },
+    {
+      name: 'brewery',
+      header: 'Brewery',
+    },
+    {
+      name: 'website',
+      header: 'Website',
+    },
   ]
 
   // Used to track what wer are currently displaying
@@ -105,12 +142,20 @@ export class SearchFormComponent implements OnInit {
       var searchCriteria = this.userForm.get('searchCriteria').value;
       
       // For keyword only searches, just want to know all beers that match
-      if(searchType === "Keyword"){
+      if(searchType === "Breweries by keyword"){
         this.http.getBreweriesKeyword(searchCriteria).subscribe((data: any) => {
           console.log(data.data);
           this.curCols = this.colsBrewery;
           this.displayedColumns = this.curCols.map((e) => e.name);
           this.dataSource = new MatTableDataSource(data.data);
+        });
+      }else if(searchType === "Beers by keyword"){
+        this.http.getBeersKeyword(searchCriteria).subscribe((data: any) => {
+          var processedData = processBeerList(data.data);
+          console.log(processedData);
+          this.curCols = this.colsBeersAtBrewery;
+          this.displayedColumns = this.curCols.map((e) => e.name);
+          this.dataSource = new MatTableDataSource(processedData);
         });
       }
   }
@@ -123,4 +168,48 @@ export class SearchFormComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+}
+
+// Convert beer list from API to list of Beer objects
+function processBeerList(data){
+  var toReturn = [];
+  for(var index in data){
+    const curRow = data[index];
+
+    // If they are too lazy to input a style,
+    // then they are uninvited from the party
+    if(curRow["style"] === undefined){
+      continue;
+    }
+
+    const breweries = processBreweryList(curRow["breweries"]);
+    for(var brewIndex in breweries){
+      const curBrewery = breweries[brewIndex]
+      const beer: Beer ={
+        name: curRow["name"],
+        abv: curRow["abv"],
+        style: curRow["style"]["shortName"],
+        description: curRow["description"],
+        brewery: curBrewery["name"],
+        website: curBrewery["website"]
+      };
+      toReturn.push(beer);
+    }
+  }
+  return toReturn;
+}
+
+// Convert brewery list from API to list of Brewery objects
+function processBreweryList(data){
+  var toReturn = [];
+  for(var index in data){
+    const curRow = data[index];
+    const brewery: Brewery ={
+      name: curRow["name"],
+      website: curRow["website"],
+      description: curRow["description"],
+    }
+    toReturn.push(brewery);
+  }
+  return toReturn;
 }

@@ -43,7 +43,7 @@ app.get('/get-breweriesClose', function(req, res) {
             lat = req.query.Latitude;
             long = req.query.Longitude;
             
-            const _res = await superagent.get(`${breweryDBURL}/search/geo/point/?lat=${lat}&lng=${long}&radius=100&key=${process.env.API_KEY}`);
+            const _res = await superagent.get(`${breweryDBURL}/search/geo/point/?lat=${lat}&lng=${long}&radius=10&key=${process.env.API_KEY}`);
             console.log(_res.status);
             res.send(_res.body);
         } catch (err) {
@@ -57,8 +57,21 @@ app.get('/get-breweriesKeyword', function(req, res) {
     (async() => {
         try {
             query = req.query.query;
-            
             const _res = await superagent.get(`${breweryDBURL}/search/?q=${query}&type=brewery&withLocations=Y&withBreweries=Y&key=${process.env.API_KEY}`);
+            console.log(_res.status);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
+
+// Find breweries based on on a keyword search
+app.get('/get-beersKeyword', function(req, res) {
+    (async() => {
+        try {
+            query = req.query.query;
+            const _res = await superagent.get(`${breweryDBURL}/search/?q=${query}&type=beer&withLocations=Y&withBreweries=Y&key=${process.env.API_KEY}`);
             console.log(_res.status);
             res.send(_res.body);
         } catch (err) {

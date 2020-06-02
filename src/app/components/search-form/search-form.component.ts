@@ -1,11 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ValidatorFn,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, FormControl} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,20 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { GeolocationService } from '@app/services/geoloction.service';
 import { HttpService } from '@app/services/http.service';
 import { NotificationService } from '@app/services/notification.service';
-
-interface Brewery{
-  name: string;
-  website: string;
-  description: string;
-}
-interface Beer{
-  name: string;
-  abv: string;
-  style: string;
-  description: string;
-  brewery: string;
-  website: string;
-}
+import {  Brews, Beers, Breweries, BeersWithBreweries } from '@app/models/BrewTypes';
 
 @Component({
   selector: 'app-search-form',
@@ -37,70 +18,11 @@ export class SearchFormComponent implements OnInit {
   userForm: FormGroup;
   curCoords: any;
 
-  // Beer specific view
-  cols = [
-    {
-      name: 'id',
-      header: 'ID',
-    },
-    {
-      name: 'name',
-      header: 'Name',
-    },
-    {
-      name: 'abv',
-      header: 'ABV',
-    },
-    {
-      name: 'styleId',
-      header: 'Style ID',
-    },
-    {
-      name: 'status',
-      header: 'Status',
-    },
-  ];
-
-  // Brewery Specific view
-  colsBrewery = [
-    {
-      name: 'name',
-      header: "Name"
-    },
-    {
-      name: 'website',
-      header: "website"
-    }
-  ]
-
-  colsBeersAtBrewery = [
-    {
-      name: 'name',
-      header: 'Name',
-    },
-    {
-      name: 'abv',
-      header: 'ABV',
-    },
-    {
-      name: 'style',
-      header: 'Style',
-    },
-    {
-      name: 'brewery',
-      header: 'Brewery',
-    },
-    {
-      name: 'website',
-      header: 'Website',
-    },
-  ]
-
   // Used to track what wer are currently displaying
-  curCols = this.cols;
-  displayedColumns: string[] = this.curCols.map((e) => e.name);
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
-  myData: any = [];
+  curBrews: Brews;
+  curCols: Array<any>;
+  displayedColumns: string[];
+  dataSource: MatTableDataSource<any> ;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -119,12 +41,32 @@ export class SearchFormComponent implements OnInit {
     );
   }
 
+  updateModel(brews: Brews, data){
+    console.log("Raw data")
+    console.log(data);
+
+    this.curBrews = brews;
+    console.log("New Brew type");
+    console.log(this.curBrews);
+
+    this.curCols = this.curBrews.cols;
+    console.log("New cols")
+    console.log(this.curCols);
+
+    this.displayedColumns = this.curCols.map((e) => e.name);
+    console.log("New displaye columns")
+    console.log(this.displayedColumns);
+
+    const processedData = this.curBrews.process(data)
+    this.dataSource = new MatTableDataSource(processedData);
+    console.log("processed data")
+    console.log(this.dataSource);
+  }
+
   ngOnInit(): void {
     // Get beer info
     this.http.getBeers().subscribe((data: any) => {
-      console.log('beers:');
-      console.log(data);
-      this.dataSource = new MatTableDataSource(data.data);
+      this.updateModel(new Beers(), data.data);
     });
 
     this.dataSource.paginator = this.paginator;
@@ -144,18 +86,11 @@ export class SearchFormComponent implements OnInit {
       // For keyword only searches, just want to know all beers that match
       if(searchType === "Breweries by keyword"){
         this.http.getBreweriesKeyword(searchCriteria).subscribe((data: any) => {
-          console.log(data.data);
-          this.curCols = this.colsBrewery;
-          this.displayedColumns = this.curCols.map((e) => e.name);
-          this.dataSource = new MatTableDataSource(data.data);
+          this.updateModel(new Breweries(), data.data);
         });
       }else if(searchType === "Beers by keyword"){
         this.http.getBeersKeyword(searchCriteria).subscribe((data: any) => {
-          var processedData = processBeerList(data.data);
-          console.log(processedData);
-          this.curCols = this.colsBeersAtBrewery;
-          this.displayedColumns = this.curCols.map((e) => e.name);
-          this.dataSource = new MatTableDataSource(processedData);
+          this.updateModel(new BeersWithBreweries(), data.data);
         });
       }
   }
@@ -168,48 +103,4 @@ export class SearchFormComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-}
-
-// Convert beer list from API to list of Beer objects
-function processBeerList(data){
-  var toReturn = [];
-  for(var index in data){
-    const curRow = data[index];
-
-    // If they are too lazy to input a style,
-    // then they are uninvited from the party
-    if(curRow["style"] === undefined){
-      continue;
-    }
-
-    const breweries = processBreweryList(curRow["breweries"]);
-    for(var brewIndex in breweries){
-      const curBrewery = breweries[brewIndex]
-      const beer: Beer ={
-        name: curRow["name"],
-        abv: curRow["abv"],
-        style: curRow["style"]["shortName"],
-        description: curRow["description"],
-        brewery: curBrewery["name"],
-        website: curBrewery["website"]
-      };
-      toReturn.push(beer);
-    }
-  }
-  return toReturn;
-}
-
-// Convert brewery list from API to list of Brewery objects
-function processBreweryList(data){
-  var toReturn = [];
-  for(var index in data){
-    const curRow = data[index];
-    const brewery: Brewery ={
-      name: curRow["name"],
-      website: curRow["website"],
-      description: curRow["description"],
-    }
-    toReturn.push(brewery);
-  }
-  return toReturn;
 }

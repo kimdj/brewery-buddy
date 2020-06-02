@@ -33,7 +33,7 @@ export class SearchFormComponent implements OnInit {
   curBrews: Brews;
   curCols: Array<any>;
   displayedColumns: string[];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

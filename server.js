@@ -24,7 +24,6 @@ const breweryDBURL = "http://api.brewerydb.com/v2";
 //const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
 
 app.get('/get-beers', function(req, res) {
-    // promise with async/await
     (async() => {
         try {
             const _res = await superagent.get(`${breweryDBURL}/beers/?key=${process.env.API_KEY}`);

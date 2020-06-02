@@ -1,9 +1,9 @@
 <form class="form-inline col-md-12" [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <select class="form-control mx-3" id="searchType" formControlName="searchType">
-        <option>Breweries by keyword</option>
-        <option>Beers by keyword</option>
-      </select>
+            <option value="" selected>Breweries by keyword</option>
+            <option value="">Beers by keyword</option>
+        </select>
     </div>
     <div class="form-group has-error">
         <input type="text" class="form-control" id="searchCriteria" formControlName="searchCriteria">

@@ -37,6 +37,10 @@ export class HttpService {
     return this.http.get('/get-beers');
   }
 
+  getBreweries() {
+    return this.http.get('/get-breweries');
+  }
+
   getCloseBreweries(lat, long){
     return this.http.get(`/get-breweriesClose?Latitude=${lat}&Longitude=${long}`);
   }

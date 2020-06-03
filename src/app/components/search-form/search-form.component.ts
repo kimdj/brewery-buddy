@@ -19,6 +19,7 @@ import {
   Breweries,
   BeersWithBreweries,
 } from '@app/models/brewTypes';
+import { SpinnerService } from '@app/services/spinner.service';
 
 @Component({
   selector: 'app-search-form',
@@ -29,7 +30,7 @@ export class SearchFormComponent implements OnInit {
   userForm: FormGroup;
   curCoords: any;
 
-  // Used to track what wer are currently displaying
+  // Used to track what we are currently displaying
   curBrews: Brews;
   curCols: Array<any>;
   displayedColumns: string[];
@@ -42,7 +43,8 @@ export class SearchFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private geolocation: GeolocationService,
     private http: HttpService,
-    private notifier: NotificationService
+    private notifier: NotificationService,
+    private spinner: SpinnerService
   ) {
     this.userForm = this.formBuilder.group({
       searchType: new FormControl('', Validators.required),
@@ -51,35 +53,42 @@ export class SearchFormComponent implements OnInit {
   }
 
   updateModel(brews: Brews, data) {
-    console.log('Raw data');
-    console.log(data);
+    return new Promise((resolve, reject) => {
+      console.log('Raw data');
+      console.log(data);
 
-    this.curBrews = brews;
-    console.log('New Brew type');
-    console.log(this.curBrews);
+      this.curBrews = brews;
+      console.log('New Brew type');
+      console.log(this.curBrews);
 
-    this.curCols = this.curBrews.cols;
-    console.log('New cols');
-    console.log(this.curCols);
+      this.curCols = this.curBrews.cols;
+      console.log('New cols');
+      console.log(this.curCols);
 
-    this.displayedColumns = this.curCols.map((e) => e.name);
-    console.log('New displaye columns');
-    console.log(this.displayedColumns);
+      this.displayedColumns = this.curCols.map((e) => e.name);
+      console.log('New displaye columns');
+      console.log(this.displayedColumns);
 
-    const processedData = this.curBrews.process(data);
-    this.dataSource = new MatTableDataSource(processedData);
-    console.log('processed data');
-    console.log(this.dataSource);
+      const processedData = this.curBrews.process(data);
+      this.dataSource.data = processedData;
+      console.log('processed data');
+      console.log(this.dataSource);
+
+      resolve();
+    });
   }
 
   ngOnInit(): void {
-    // Get beer info
-    this.http.getBeers().subscribe((data: any) => {
-      this.updateModel(new Beers(), data.data);
-    });
+    this.spinner.on();
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    // Get beer info
+    this.http.getBeers().subscribe(async (data: any) => {
+      await this.updateModel(new Beers(), data.data);
+      this.spinner.off();
+    });
 
     // Find where the user is hiding
     this.geolocation.getLocation().subscribe((res) => {
@@ -89,18 +98,41 @@ export class SearchFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.spinner.on();
+
     var searchType = this.userForm.get('searchType').value;
     var searchCriteria = this.userForm.get('searchCriteria').value;
 
+    if (searchCriteria === '' && (searchType === 'Search Breweries by Keyword' || searchType === 'Search Beers by Keyword')) {
+      this.notifier.showWarning('Search criteria invalid!', '');
+      this.spinner.off();
+      return;
+    }
+
     // For keyword only searches, just want to know all beers that match
-    if (searchType === 'Breweries by keyword') {
-      this.http.getBreweriesKeyword(searchCriteria).subscribe((data: any) => {
-        this.updateModel(new Breweries(), data.data);
+    if (searchType === 'Search Breweries by Keyword') {
+      this.http.getBreweriesKeyword(searchCriteria).subscribe(async (data: any) => {
+        await this.updateModel(new Breweries(), data.data);
+        this.spinner.off();
       });
-    } else if (searchType === 'Beers by keyword') {
-      this.http.getBeersKeyword(searchCriteria).subscribe((data: any) => {
-        this.updateModel(new BeersWithBreweries(), data.data);
+    } else if (searchType === 'Search Beers by Keyword') {
+      this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
+        await this.updateModel(new BeersWithBreweries(), data.data);
+        this.spinner.off();
       });
+    } else if (searchType === 'Get All Breweries') {
+      this.http.getBreweries().subscribe(async (data: any) => {
+        await this.updateModel(new Beers(), data.data);
+        this.spinner.off();
+      });
+    } else if (searchType === 'Get All Beers') {
+      this.http.getBeers().subscribe(async (data: any) => {
+        await this.updateModel(new Beers(), data.data);
+        this.spinner.off();
+      });
+    } else {
+      this.notifier.showError('Unknown search type!', '');
+      this.spinner.off();
     }
   }
 

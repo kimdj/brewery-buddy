@@ -27,7 +27,19 @@ app.get('/get-beers', function(req, res) {
     (async() => {
         try {
             const _res = await superagent.get(`${breweryDBURL}/beers/?key=${process.env.API_KEY}`);
-            console.log(_res.status);
+            console.log(_res.body);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
+
+app.get('/get-breweries', function(req, res) {
+    (async() => {
+        try {
+            const _res = await superagent.get(`${breweryDBURL}/breweries/?key=${process.env.API_KEY}`);
+            console.log(_res.body);
             res.send(_res.body);
         } catch (err) {
             console.error(err);
@@ -43,7 +55,7 @@ app.get('/get-breweriesClose', function(req, res) {
             long = req.query.Longitude;
             
             const _res = await superagent.get(`${breweryDBURL}/search/geo/point/?lat=${lat}&lng=${long}&radius=10&key=${process.env.API_KEY}`);
-            console.log(_res.status);
+            console.log(_res.body);
             res.send(_res.body);
         } catch (err) {
             console.error(err);
@@ -57,7 +69,7 @@ app.get('/get-breweriesKeyword', function(req, res) {
         try {
             query = req.query.query;
             const _res = await superagent.get(`${breweryDBURL}/search/?q=${query}&type=brewery&withLocations=Y&withBreweries=Y&key=${process.env.API_KEY}`);
-            console.log(_res.status);
+            console.log(_res.body);
             res.send(_res.body);
         } catch (err) {
             console.error(err);
@@ -71,7 +83,7 @@ app.get('/get-beersKeyword', function(req, res) {
         try {
             query = req.query.query;
             const _res = await superagent.get(`${breweryDBURL}/search/?q=${query}&type=beer&withLocations=Y&withBreweries=Y&key=${process.env.API_KEY}`);
-            console.log(_res.status);
+            console.log(_res.body);
             res.send(_res.body);
         } catch (err) {
             console.error(err);

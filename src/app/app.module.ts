@@ -28,6 +28,8 @@ import { SpinnerService } from './services/spinner.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { NotificationService } from './services/notification.service';
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     MatSortModule,
+    MatTabsModule,
+    MatSelectModule,
   ],
   providers: [SpinnerService, NotificationService],
   bootstrap: [AppComponent]

@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,7 +13,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
 import { GeolocationService } from '@app/services/geoloction.service';
@@ -21,12 +27,46 @@ import {
 } from '@app/models/brewTypes';
 import { SpinnerService } from '@app/services/spinner.service';
 
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { SelectionModel } from '@angular/cdk/collections';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state(
+        'collapsed',
+        style({ height: '0px', minHeight: '0', display: 'none' })
+      ),
+      state('expanded', style({ height: '*' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchFormComponent implements OnInit {
+  /***********************************************************************************/
+
+  expandedElement: any;
+  objectKeys = Object.keys;
+
+  /***********************************************************************************/
+
   userForm: FormGroup;
   curCoords: any;
 
@@ -46,7 +86,7 @@ export class SearchFormComponent implements OnInit {
     private notifier: NotificationService,
     private spinner: SpinnerService
   ) {
-    this.dataSource = new MatTableDataSource([])
+    this.dataSource = new MatTableDataSource([]);
 
     this.userForm = this.formBuilder.group({
       searchType: new FormControl('', Validators.required),
@@ -67,8 +107,8 @@ export class SearchFormComponent implements OnInit {
       console.log('New cols');
       console.log(this.curCols);
 
-      this.displayedColumns = this.curCols.map((e) => e.name);
-      console.log('New displaye columns');
+      this.displayedColumns = ['arrow'].concat(this.curCols.map((e) => e.name));
+      console.log('New displayed columns');
       console.log(this.displayedColumns);
 
       const processedData = this.curBrews.process(data);
@@ -105,7 +145,11 @@ export class SearchFormComponent implements OnInit {
     var searchType = this.userForm.get('searchType').value;
     var searchCriteria = this.userForm.get('searchCriteria').value;
 
-    if (searchCriteria === '' && (searchType === 'Search Breweries by Keyword' || searchType === 'Search Beers by Keyword')) {
+    if (
+      searchCriteria === '' &&
+      (searchType === 'Search Breweries by Keyword' ||
+        searchType === 'Search Beers by Keyword')
+    ) {
       this.notifier.showWarning('Search criteria invalid!', '');
       this.spinner.off();
       return;
@@ -113,10 +157,12 @@ export class SearchFormComponent implements OnInit {
 
     // For keyword only searches, just want to know all beers that match
     if (searchType === 'Search Breweries by Keyword') {
-      this.http.getBreweriesKeyword(searchCriteria).subscribe(async (data: any) => {
-        await this.updateModel(new Breweries(), data.data);
-        this.spinner.off();
-      });
+      this.http
+        .getBreweriesKeyword(searchCriteria)
+        .subscribe(async (data: any) => {
+          await this.updateModel(new Breweries(), data.data);
+          this.spinner.off();
+        });
     } else if (searchType === 'Search Beers by Keyword') {
       this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
         await this.updateModel(new BeersWithBreweries(), data.data);
@@ -146,4 +192,15 @@ export class SearchFormComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  /***********************************************************************************/
+
+  onClickTabs(event: MatTabChangeEvent, sample: any) {
+    console.log('event => ', event);
+    console.log('index => ', event.index);
+    console.log('tab => ', event.tab);
+    console.log('sample => ', sample);
+  }
+
+  /***********************************************************************************/
 }

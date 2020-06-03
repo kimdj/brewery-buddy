@@ -1,14 +1,46 @@
-<h3 class="text-center">Breweries To Explore</h3>
+ <h3 class="text-center">Closest Brewery</h3>
 <mat-grid-list cols="1" class="myGridList">
-    <mat-grid-tile *ngFor="let brewery of breweries">
+    <mat-grid-tile>
         <mat-card class="dashboard-card">
             <mat-card-header>
                 <mat-card-title>
-                    {{brewery.name}}
+                    {{breweries.brews[0].name}}
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content class="dashboard-card-content">
-                <a mat-stroked-button href="{{brewery.website}}">website</a>
+                <a mat-stroked-button href="{{breweries.brews[0].website}}">website</a>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<h3 class="text-center">Upcoming Event</h3>
+<mat-grid-list cols="1" class="myGridList">
+    <mat-grid-tile>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>
+                    {{event.name}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="dashboard-card-content">
+                <a mat-stroked-button href="{{event.website}}">website</a>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<h3 class="text-center">Random Beer</h3>
+<mat-grid-list cols="1" class="myGridList">
+    <mat-grid-tile>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>
+                    {{beers.brews[0].name}}
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="dashboard-card-content">
+                <a mat-stroked-button href="{{beers.brews[0].style}}">website</a>
             </mat-card-content>
         </mat-card>
     </mat-grid-tile>

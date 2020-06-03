@@ -33,6 +33,10 @@ export class HttpService {
 
   /*****  Brewery DB  *****/
 
+  getRandomBeer() {
+    return this.http.get('/get-random-beer');
+  }
+
   getBeers() {
     return this.http.get('/get-beers');
   }
@@ -41,6 +45,9 @@ export class HttpService {
     return this.http.get('/get-breweries');
   }
 
+  getUpcomingEvents() {
+    return this.http.get('/get-upcoming-events');
+  }
   getCloseBreweries(lat, long){
     return this.http.get(`/get-breweriesClose?Latitude=${lat}&Longitude=${long}`);
   }

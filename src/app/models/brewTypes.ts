@@ -7,7 +7,7 @@
 
 ****************************************************************/
 export class Brew {
-  constructor(private name: string) {}
+  constructor(public name: string) {}
 }
 
 export class Brews {
@@ -52,10 +52,10 @@ export class Brews {
 export class Beer extends Brew {
   constructor(
     name: string,
-    private id: string,
-    private abv: string,
-    private styleId: string,
-    private status: string
+    public id: string,
+    public abv: string,
+    public styleId: string,
+    public status: string
   ) {
     super(name);
   }
@@ -105,7 +105,7 @@ export class Beers extends Brews {
 **************************************************************/
 
 export class Brewery extends Brew {
-  constructor(name: string, private website: string) {
+  constructor(name: string, public website: string) {
     super(name);
   }
 }
@@ -138,9 +138,9 @@ export class Breweries extends Brews {
 export class BeerWithBrewery extends Brew {
   constructor(
     name: string,
-    private abv: string,
-    private style: string,
-    private breweries: Array<Brewery>
+    public abv: string,
+    public style: string,
+    public breweries: Array<Brewery>
   ) {
     super(name);
   }
@@ -209,4 +209,9 @@ export class BeersWithBreweries extends Brews {
     var results = breweries.process(data['breweries']);
     return new BeerWithBrewery(data['name'], data['abv'], data["style"]["shortName"], results);
   }
+}
+
+export interface Event{
+  name: string;
+  website: string;
 }

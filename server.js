@@ -23,6 +23,29 @@ app.get('/', function(req, res) {
 const breweryDBURL = "http://api.brewerydb.com/v2";
 //const breweryDBURL = "http://sandbox-api.brewerydb.com/v2";
 
+app.get('/get-random-beer', function(req, res) {
+    (async() => {
+        try {
+            const _res = await superagent.get(`${breweryDBURL}/beer/random?key=${process.env.API_KEY}&withSocialAccounts=Y&withBreweries=Y`);
+            console.log(_res.body);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
+
+app.get('/get-upcoming-events', function(req, res) {
+    (async() => {
+        try {
+            const _res = await superagent.get(`${breweryDBURL}/events/?key=${process.env.API_KEY}&order=startDate`);
+            console.log(_res.body);
+            res.send(_res.body);
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+});
 app.get('/get-beers', function(req, res) {
     (async() => {
         try {

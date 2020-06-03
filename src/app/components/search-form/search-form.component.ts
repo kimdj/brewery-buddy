@@ -34,7 +34,7 @@ export class SearchFormComponent implements OnInit {
   curBrews: Brews;
   curCols: Array<any>;
   displayedColumns: string[];
-  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -46,6 +46,8 @@ export class SearchFormComponent implements OnInit {
     private notifier: NotificationService,
     private spinner: SpinnerService
   ) {
+    this.dataSource = new MatTableDataSource([])
+
     this.userForm = this.formBuilder.group({
       searchType: new FormControl('', Validators.required),
       searchCriteria: new FormControl('', Validators.required),

@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { HeaderComponent } from './components/header/header.component';
@@ -56,7 +57,8 @@ import { NotificationService } from './services/notification.service';
     MatPaginatorModule,
     LayoutModule,
     NgxSpinnerModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatSortModule,
   ],
   providers: [SpinnerService, NotificationService],
   bootstrap: [AppComponent]

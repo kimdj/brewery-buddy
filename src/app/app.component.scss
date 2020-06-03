@@ -11,3 +11,35 @@ td,
 th {
     width: 25%;
 }
+
+.responsive {
+    margin-top: 80px;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media screen and (min-width: 576px) {  
+    .responsive {
+        margin-top: 100px;
+    }
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media screen and (min-width: 812px) {  
+    .responsive {
+        margin-top: 270px;
+    }
+}
+ 
+// /* Large devices (desktops, 992px and up) */
+// @media screen and (min-width: 992px) { 
+//     .responsive {
+//         margin-top: 270px;
+//     }
+// }
+ 
+// /* Extra large devices (large desktops, 1200px and up) */
+// @media screen and (min-width: 1200px) {  
+//     .responsive {
+//         margin-top: 1200px;
+//     }
+// }

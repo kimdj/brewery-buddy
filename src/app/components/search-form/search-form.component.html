@@ -1,7 +1,7 @@
 <form class="form-inline col-md-12" [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <select class="form-control mx-3" id="searchType" formControlName="searchType">
-            <option value="Search Breweries by Keyword" selected>Search Breweries by Keyword</option>
+            <option value="Search Breweries by Keyword" [selected]="true">Search Breweries by Keyword</option>
             <option value="Search Beers by Keyword">Search Beers by Keyword</option>
             <option value="Get All Breweries">Get All Breweries</option>
             <option value="Get All Beers">Get All Beers</option>

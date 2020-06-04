@@ -1,20 +1,24 @@
-<form class="form-inline col-md-12"
+<form class="form-inline col-md-12 py-4"
     [formGroup]="userForm"
     (ngSubmit)="onSubmit()">
     <div class="form-group">
         <select class="form-control mx-3"
             id="searchType"
-            formControlName="searchType">
-            <option value="Breweries by Keyword" selected>Breweries by Keyword</option>
+            formControlName="searchType"
+            value="Breweries by Keyword">
+            <option value="Breweries by Keyword"
+                selected>Breweries by Keyword</option>
             <option value="Beers by Keyword">Beers by Keyword</option>
             <option value="Breweries Nearby">Breweries Nearby</option>
         </select>
     </div>
     <div class="form-group has-error">
-        <input type="text"
+        <input *ngIf="userForm.get('searchType').value !== 'Breweries Nearby'"
+            type="text"
             class="form-control"
             id="searchCriteria"
-            formControlName="searchCriteria">
+            formControlName="searchCriteria"
+            placeholder="e.g., IPA, dog, etc.">
     </div>
     <div class="form-group mx-4">
         <button id="submitButton"
@@ -23,16 +27,9 @@
     </div>
 </form>
 
-<!-- <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Ex. Mia">
-</mat-form-field> -->
-
-<div class="mat-elevation-z8">
-    <div class="row h-50 justify-content-center align-items-center"
-        style="margin: 0 0 0 30">
+<div class="mat-elevation-z8 table-responsive">
+    <div class="row h-50 justify-content-center align-items-center m-0"
+        style=" background-color: white;">
 
         <!-- FILTER INPUT BOX -->
         <div class="col-12 px-5"
@@ -54,8 +51,6 @@
         multiTemplateDataRows
         #sort="matSort"
         matSort>
-
-
 
         <ng-container [matColumnDef]="column"
             *ngFor="let column of displayedColumns">
@@ -80,6 +75,17 @@
                                 <mat-icon style="cursor: default"> expand_more </mat-icon>
                             </ng-container>
                         </div>
+                    </td>
+                </ng-container>
+
+                <!-- WEBSITE COLUMN -->
+                <ng-container *ngSwitchCase="'website'">
+                    <th mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header> {{column}} </th>
+                    <td mat-cell
+                        *matCellDef="let element">
+                        <a href="{{element[column]}}"> {{element[column]}} </a>
                     </td>
                 </ng-container>
 
@@ -121,7 +127,9 @@
                                 <div class="container-fluid example-large-box start mat-elevation-z4">
 
                                     <ng-container *ngFor="let key of objectKeys(element); let i = index">
-                                        <b> {{key}}: </b> {{element[key]}}
+                                        <div style="display: inline">
+                                            <b> {{key}}: </b> {{element[key]}}
+                                        </div>
                                     </ng-container>
 
                                 </div>
@@ -129,7 +137,7 @@
                         </mat-tab>
 
                         <!-- DIRECTIONS TAB -->
-                        <mat-tab>
+                        <mat-tab *ngIf="curCoords">
                             <ng-template mat-tab-label>
                                 Directions
                                 <mat-icon class="example-tab-icon"> directions </mat-icon>
@@ -138,11 +146,29 @@
                             <ng-template matTabContent>
                                 <div class="container-fluid example-large-box start mat-elevation-z4">
 
-                                    <iframe width="600"
+                                    <div *ngIf="breweryAddress"
+                                        style="display: inline;">
+                                        <b> Name: </b> {{breweryAddress.name}} <br />
+                                        <b> Street Address: </b> {{breweryAddress.streetAddress}} <br />
+                                        <b> City: </b> {{breweryAddress.locality}} <br />
+                                        <b> State: </b> {{breweryAddress.region}} <br />
+                                        <b> Postal Code: </b> {{breweryAddress.postalCode}} <br />
+                                        <b> Country: </b> {{breweryAddress.country}} <br />
+                                        <b> Latitude: </b> {{breweryAddress.latitude}} <br />
+                                        <b> Longitude: </b> {{breweryAddress.longitude}} <br />
+                                    </div>
+
+                                    <!-- <ng-container *ngFor="let key of objectKeys(breweryAddress)"
+                                        style="display: inline">
+                                        <b> {{key}}: </b> {{breweryAddress[key]}}
+                                    </ng-container> -->
+
+                                    <iframe *ngIf="src"
+                                        width="600"
                                         height="450"
                                         frameborder="0"
                                         style="border:0"
-                                        src="https://www.google.com/maps/embed/v1/directions?origin=place_id:ChIJJ3SpfQsLlVQRkYXR9ua5Nhw&destination=place_id:ChIJVTPokywQkFQRmtVEaUZlJRA&key=AIzaSyCwUi4rZeHrolxoEd37PS724XoCZgHIawY"
+                                        [src]="src"
                                         allowfullscreen></iframe>
 
                                 </div>
@@ -170,32 +196,11 @@
                             </ng-template>
                         </mat-tab>
 
-                        <!-- DRAW TAB -->
-                        <!-- <mat-tab>
-                            <ng-template mat-tab-label>
-                                Draws
-                                <mat-icon class="example-tab-icon"> date_range </mat-icon>
-                            </ng-template>
-
-                            <ng-template matTabContent>
-                                <div class="container-fluid example-large-box start mat-elevation-z4">
-
-                                    <ng-container *ngFor="let key of objectKeys(element); let i = index">
-                                        <b> {{key}}: </b> {{element[key]}}
-                                    </ng-container>
-
-                                </div>
-                            </ng-template>
-                        </mat-tab> -->
-
                     </mat-tab-group>
 
                 </div>
             </td>
         </ng-container>
-
-
-
 
         <tr mat-header-row
             *matHeaderRowDef="displayedColumns"></tr>
@@ -208,16 +213,6 @@
             *matRowDef="let row; columns: ['expandedDetail']"
             class="example-detail-row"></tr>
     </table>
-
-
-
-
-
-
-
-
-
-
 
     <mat-paginator [pageSizeOptions]="[5, 10, 25]"
         [pageSize]="10"></mat-paginator>

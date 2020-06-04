@@ -1,48 +1,50 @@
-<div *ngIf="breweryLocations.brews[0]" class="dashboard-card">
+<div *ngIf="breweryLocations.brews[0]"
+    class="dashboard-card">
     <h3 class="text-center">Closest Brewery</h3>
-    <mat-grid-list cols="1" class="myGridList">
-        <mat-grid-tile>
-            <mat-card >
-                <mat-card-header>
-                    <mat-card-title>{{breweryLocations.brews[0].brewery.name}}</mat-card-title>
-                    <mat-card-subtitle>{{breweryLocations.brews[0].name}} - {{breweryLocations.brews[0].distance}} (miles)</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions>
-                    <a mat-stroked-button href="{{breweryLocations.brews[0].website}}">More Information</a>
-                </mat-card-actions>
-            </mat-card>
-        </mat-grid-tile>
+    <mat-grid-list cols="1"
+        class="myGridList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{breweryLocations.brews[0].brewery.name}}</mat-card-title>
+                <mat-card-subtitle>{{breweryLocations.brews[0].name}} - {{breweryLocations.brews[0].distance}}
+                    (miles)</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+                <a mat-stroked-button
+                    href="{{breweryLocations.brews[0].website}}">More Information</a>
+            </mat-card-actions>
+        </mat-card>
     </mat-grid-list>
- </div>
+</div>
 
- <div *ngIf="event" class="dashboard-card">
+<div *ngIf="event"
+    class="dashboard-card">
     <h3 class="text-center">Upcoming Event</h3>
-    <mat-grid-list cols="1" class="myGridList">
-        <mat-grid-tile>
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>{{event.name}}</mat-card-title>
-                    <mat-card-subtitle>{{event.description}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions>
-                    <a mat-stroked-button href="{{event.website}}">More Information</a>
-                </mat-card-actions>
-            </mat-card>
-        </mat-grid-tile>
+    <mat-grid-list cols="1"
+        class="myGridList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{event.name}}</mat-card-title>
+                <mat-card-subtitle>{{event.description}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions>
+                <a mat-stroked-button
+                    href="{{event.website}}">More Information</a>
+            </mat-card-actions>
+        </mat-card>
     </mat-grid-list>
- </div>
+</div>
 
- <div *ngIf="beers.brews[0]" class="dashboard-card">
+<div *ngIf="beers.brews[0]"
+    class="dashboard-card">
     <h3 class="text-center">Beer of the Moment</h3>
-    <mat-grid-list cols="1" class="myGridList">
-        <mat-grid-tile>
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>{{beers.brews[0].name}}</mat-card-title>
-                    <mat-card-subtitle>{{beers.brews[0]["style"]}}</mat-card-subtitle>
-                </mat-card-header>
-            </mat-card>
-        </mat-grid-tile>
+    <mat-grid-list cols="1"
+        class="myGridList">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{beers.brews[0].name}}</mat-card-title>
+                <mat-card-subtitle>{{beers.brews[0]["style"]}}</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
     </mat-grid-list>
- </div>
-
+</div>

@@ -6,24 +6,26 @@
     <app-header></app-header>
 
     <!-- FIRST SECTION -->
-    <main role="main" class="container-fluid mx-2 responsive">
+    <main role="main"
+        class="container-fluid mx-2 mb-5 responsive">
 
         <!-- MAIN COLUMN -->
         <div class="row">
 
             <!-- LEFT COLUMN (SEARCH + RESULTS AREA) -->
-            <div class="col-md-10">
-                <main id="main" class="container-fluid bg-light">
-                    <div id="searchArea" class="col-md-12">
-                        <h3 class="row text-center"> Brew Finder </h3>
-                        <app-search-form></app-search-form>
-                    </div>
+            <div class="col-md-9">
+                <main class="container-fluid bg-light p-5"
+                    id="main">
+                    <h3 *ngIf="innerWidth > 576"
+                        class="row text-center"> Brew Finder </h3>
+                    <app-search-form></app-search-form>
                 </main>
             </div>
 
             <!-- RIGHT COLUMN (RSS FEED) -->
-            <div class="col-md-2">
-                <aside id="aside" class="bg-light">
+            <div class="col-md-3">
+                <aside class="bg-light"
+                    id="aside">
                     <app-rss-feed></app-rss-feed>
                 </aside>
             </div>

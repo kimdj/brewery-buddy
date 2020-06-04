@@ -40,6 +40,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-search-form',
@@ -76,6 +78,9 @@ export class SearchFormComponent implements OnInit {
   curCols: Array<any>;
   displayedColumns: string[];
   dataSource: MatTableDataSource<any>;
+  currentRawData: any;
+  src: any = null;
+  breweryAddress: any = null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -85,7 +90,9 @@ export class SearchFormComponent implements OnInit {
     private geolocation: GeolocationService,
     private http: HttpService,
     private notifier: NotificationService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private sanitizer: DomSanitizer,
+    private cd: ChangeDetectorRef
   ) {
     this.dataSource = new MatTableDataSource([]);
 
@@ -99,6 +106,7 @@ export class SearchFormComponent implements OnInit {
     return new Promise((resolve, reject) => {
       console.log('Raw data');
       console.log(data);
+      this.currentRawData = data;
 
       this.curBrews = brews;
       console.log('New Brew type');
@@ -135,8 +143,10 @@ export class SearchFormComponent implements OnInit {
 
     // Find where the user is hiding
     this.geolocation.getLocation().subscribe((res) => {
+      console.log('current location:');
       console.log(res.coords);
       this.curCoords = res.coords;
+      this.cd.detectChanges();
     });
   }
 
@@ -160,31 +170,38 @@ export class SearchFormComponent implements OnInit {
           await this.updateModel(new Breweries(), data.data);
           this.spinner.off();
         });
+
+      // Beers by Keyword
     } else if (searchType === 'Beers by Keyword') {
       this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
         await this.updateModel(new BeersWithBreweries(), data.data);
         this.spinner.off();
       });
-    }else if (searchType === 'Breweries Nearby') {
-      // Default to denver, because I know it will work:)
-        var lat = "39.7236683";
-        var long = "-105.0006015";
-        this.http.getCloseBreweries(this.curCoords.latitude, this.curCoords.longitude).subscribe(async data =>{
-          if(data["data"] === undefined){
-            this.http.getCloseBreweries(lat, long).subscribe( async data =>{
-              await this.updateModel(new BreweryLocations(), data["data"]);
+
+      // Breweries Nearby
+    } else if (searchType === 'Breweries Nearby') {
+      this.http
+        .getCloseBreweries(this.curCoords.latitude, this.curCoords.longitude)
+        .subscribe(async (data) => {
+          // Default to denver, because I know it will work:)
+          if (data['data'] === undefined) {
+            var lat = '39.7236683';
+            var long = '-105.0006015';
+            this.http.getCloseBreweries(lat, long).subscribe(async (data) => {
+              await this.updateModel(new BreweryLocations(), data['data']);
               this.spinner.off();
             });
-          }else{
-            await this.updateModel(new BreweryLocations(), data["data"]);
+            // Otherwise, we found breweries nearby
+          } else {
+            await this.updateModel(new BreweryLocations(), data['data']);
             this.spinner.off();
-          }     
+          }
         });
-    this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
-      await this.updateModel(new BeersWithBreweries(), data.data);
-      this.spinner.off();
-    });
-  }else {
+      this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
+        await this.updateModel(new BeersWithBreweries(), data.data);
+        this.spinner.off();
+      });
+    } else {
       this.notifier.showError('Unknown search type!', '');
       this.spinner.off();
     }
@@ -201,11 +218,79 @@ export class SearchFormComponent implements OnInit {
 
   /***********************************************************************************/
 
-  onClickTabs(event: MatTabChangeEvent, sample: any) {
+  onClickTabs(event: MatTabChangeEvent, element: any) {
     console.log('event => ', event);
     console.log('index => ', event.index);
     console.log('tab => ', event.tab);
-    console.log('sample => ', sample);
+    console.log('element => ', element);
+
+    // Directions tab
+    if (event.index === 1) {
+      this.getDirections(element);
+    }
+  }
+
+  getDirections(element) {
+    console.log('element:');
+    console.log(element);
+
+    const api_key = 'AIzaSyCwUi4rZeHrolxoEd37PS724XoCZgHIawY';
+    const origin = `${this.curCoords.latitude},${this.curCoords.longitude}`;
+
+    let found = null;
+    for (var i = 0; i < this.currentRawData.length; i++) {
+      if (this.currentRawData[i].name === element.name) {
+        found = this.currentRawData[i];
+      }
+    }
+
+    console.log('id:');
+    console.log(found.id);
+
+    this.spinner.on();
+
+    // Get the brewery coordinates
+    this.http.getBreweryLocation(found.id).subscribe((res: any) => {
+      console.log('----------------------------------');
+      console.log(res.data);
+      if (res.data === undefined) {
+        this.spinner.off();
+        this.notifier.showWarning('Location could not be fetched.', 'Notice');
+        return;
+      }
+      const destination = `${res.data[0].latitude},${res.data[0].longitude}`;
+
+      console.log('origin:');
+      console.log(origin);
+      console.log('destination:');
+      console.log(destination);
+
+      // Get brewery address
+      this.breweryAddress = {
+        name: res.data[0].name,
+        phone: res.data[0].phone,
+        streetAddress: res.data[0].streetAddress,
+        locality: res.data[0].locality,
+        region: res.data[0].region,
+        postalCode: res.data[0].postalCode,
+        country: res.data[0].countryIsoCode,
+        latitude: res.data[0].latitude,
+        longitude: res.data[0].longitude,
+      };
+
+      console.log(this.breweryAddress);
+
+      this.src = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}&key=${api_key}`
+      );
+      console.log(`src: ${this.src}`);
+
+      this.spinner.off();
+
+      // return this.sanitizer.bypassSecurityTrustResourceUrl(
+      //   `https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}&key=${api_key}`
+      // );
+    });
   }
 
   /***********************************************************************************/

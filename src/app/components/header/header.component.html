@@ -1,29 +1,53 @@
 <!-- DEFAULT HEADER -->
-<div *ngIf="innerWidth > 812" class="jumbotron jumbotron-fluid fixed-top bg-white text-black" [ngClass]="currentPageYOffset <= 100 ? 'jumbotron' : 'jumbotron-sm'" id="default-header">
+<div *ngIf="innerWidth > 812"
+    class="jumbotron jumbotron-fluid fixed-top bg-white text-black"
+    [ngClass]="currentPageYOffset <= 100 ? 'jumbotron' : 'jumbotron-sm'"
+    id="default-header">
 
     <!-- UPPER HEADER / LOWER LAYER -->
-    <div *ngIf="innerWidth > 1000" class="row " id="lower-layer">
+    <div *ngIf="innerWidth > 1000"
+        class="row "
+        id="lower-layer">
 
-        <!-- GRUBHUB -->
-        <div *ngIf="innerWidth > 950" class="col-lg-5" style="vertical-align: top; text-align: right; margin: 12px;">
-            <h4 href="https://www.beeradvocate.com/beer/profile/28743/415823/" class="mt-2"> Beer of the Day: Stardust </h4>
+        <div *ngIf="innerWidth > 950"
+            class="col-lg-5"
+            style="vertical-align: top; text-align: right; margin: 12px;">
+            <h4 href=""
+                class="mt-2"> </h4>
         </div>
 
         <div class="col-lg-1"></div>
 
         <!-- SOCIAL MEDIA -->
-        <div class="col-lg-3 mx-auto" style="text-align: left">
+        <div class="col-lg-3 mx-auto"
+            style="text-align: left">
             <a href="https://www.yelp.com/search?find_desc=Breweries&find_loc=Portland%2C+OR">
-                <img src="assets/img/yelp.png" height="20px" width="20px" style="margin: 13px 0 0 0" class="mt-4">
+                <img src="assets/img/yelp.png"
+                    height="20px"
+                    width="20px"
+                    style="margin: 13px 0 0 0"
+                    class="mt-4">
             </a>
             <a href="https://www.facebook.com/portlandbeermuseum/">
-                <img src="assets/img/facebook.png" height="20px" width="10px" style="margin: 13px 0 0 15px" class="mt-4">
+                <img src="assets/img/facebook.png"
+                    height="20px"
+                    width="10px"
+                    style="margin: 13px 0 0 15px"
+                    class="mt-4">
             </a>
             <a href="https://www.instagram.com/beerportland/?hl=en">
-                <img src="assets/img/instagram.png" height="20px" width="20px" style="margin: 14px 0 0 15px" class="mt-4">
+                <img src="assets/img/instagram.png"
+                    height="20px"
+                    width="20px"
+                    style="margin: 14px 0 0 15px"
+                    class="mt-4">
             </a>
             <a href="https://twitter.com/portland_beer?lang=en">
-                <img src="assets/img/twitter.png" height="20px" width="20px" style="margin: 14px 0 0 15px" class="mt-4">
+                <img src="assets/img/twitter.png"
+                    height="20px"
+                    width="20px"
+                    style="margin: 14px 0 0 15px"
+                    class="mt-4">
             </a>
         </div>
 
@@ -32,36 +56,49 @@
     </div>
 
     <!-- LOWER HEADER / UPPER LAYER -->
-    <nav class="navbar navbar-expand-md fixed-top container-fluid" [ngClass]="currentPageYOffset <= 100 ? 'header-row' : 'header-row-sm'" style="margin-top: 65px" id="upper-layer">
+    <nav class="navbar navbar-expand-md fixed-top container-fluid"
+        [ngClass]="currentPageYOffset <= 100 ? 'header-row' : 'header-row-sm'"
+        style="margin-top: 65px"
+        id="upper-layer">
 
         <!-- LEFT LINKS -->
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse"
+            id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <h4 href="#" class="nav-link mx-4 mt-2"> Drink </h4>
+                    <h4 href="#"
+                        class="nav-link mx-4 mt-2"> Drink </h4>
                 </li>
                 <li class="nav-item">
-                    <h4 href="#" class="nav-link mx-4 mt-2"> Beer </h4>
+                    <h4 href="#"
+                        class="nav-link mx-4 mt-2"> Beer </h4>
                 </li>
             </ul>
         </div>
 
         <!-- LOGO -->
         <ng-container *ngIf="currentPageYOffset <= 100; else logoSm">
-            <img class="collapse navbar-collapse img-logo" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
+            <img class="collapse navbar-collapse img-logo"
+                src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png"
+                href="#">
         </ng-container>
         <ng-template #logoSm>
-            <img class="collapse navbar-collapse img-logo-sm" src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png" href="#">
+            <img class="collapse navbar-collapse img-logo-sm"
+                src="https://www.emoji.com/wp-content/uploads/filebase/icons/emoji-icon-glossy-00-00-food-drink-drink-clinking-beer-mugs-72dpi-forPersonalUseOnly.png"
+                href="#">
         </ng-template>
 
         <!-- RIGHT LINKS -->
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse"
+            id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <h4 href="#" class="nav-link mx-4 mt-2"> All </h4>
+                    <h4 href="#"
+                        class="nav-link mx-4 mt-2"> All </h4>
                 </li>
                 <li class="nav-item">
-                    <h4 href="#" class="nav-link mx-4 mt-2"> Day </h4>
+                    <h4 href="#"
+                        class="nav-link mx-4 mt-2"> Day </h4>
                 </li>
             </ul>
         </div>
@@ -69,27 +106,41 @@
 </div>
 
 <!-- MOBILE HEADER -->
-<nav *ngIf="innerWidth <= 812" class="navbar navbar-expand-sm fixed-top scrollmenu" [style.top]="isMobileHeaderHidden" id="mobile-header">
+<nav *ngIf="innerWidth <= 812"
+    class="navbar navbar-expand-sm fixed-top scrollmenu"
+    [style.top]="isMobileHeaderHidden"
+    id="mobile-header">
 
     <!-- HAMBURGER MENU -->
-    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-       <mat-icon [ngStyle]="{'color':'white'}"> menu </mat-icon>
-   </button>
+    <button class="navbar-toggler ml-auto"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <mat-icon [ngStyle]="{'color':'white'}"> menu </mat-icon>
+    </button>
 
     <!-- LINKS -->
-    <div class="collapse navbar-collapse ml-auto" id="navbarCollapse">
+    <div class="collapse navbar-collapse ml-auto"
+        id="navbarCollapse">
         <ul class="navbar-nav ml-auto mx-auto">
             <li class="nav-item active">
-                <a href="#" class="nav-link mx-4"> Drink </a>
+                <a href="#"
+                    class="nav-link mx-4"> Drink </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link mx-4"> Beer </a>
+                <a href="#"
+                    class="nav-link mx-4"> Beer </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link mx-4"> All </a>
+                <a href="#"
+                    class="nav-link mx-4"> All </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link mx-4"> Day </a>
+                <a href="#"
+                    class="nav-link mx-4"> Day </a>
             </li>
         </ul>
     </div>

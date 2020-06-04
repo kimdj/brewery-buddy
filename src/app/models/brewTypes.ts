@@ -105,7 +105,7 @@ export class Beers extends Brews {
 **************************************************************/
 
 export class Brewery extends Brew {
-  constructor(name: string, public website: string) {
+  constructor(name: string, public website: string, public description: string) {
     super(name);
   }
 }
@@ -124,7 +124,48 @@ export class Breweries extends Brews {
   brews: Array<Brewery>;
 
   processRow(data: any) {
-    return new Brewery(data['name'], data['website']);
+    return new Brewery(data['name'], data['website'], data['description']);
+  }
+}
+
+/**************************************************************
+ 
+        Brewery location represents a brewery site. It might have many
+        different locations.
+        
+**************************************************************/
+
+export class BreweryLocation extends Brew {
+  constructor(
+    name: string,
+    public website: string,
+    public distance: string, 
+    public brewery: Brewery) {
+    super(name);
+  }
+}
+export class BreweryLocations extends Brews {
+  cols = [
+    {
+      name: 'name',
+      header: 'Name',
+    },
+    {
+      name: 'website',
+      header: 'website',
+    },
+  ];
+
+  brews: Array<BreweryLocation>;
+
+  processRow(data: any) {
+    const breweries = new Breweries();
+    var results = breweries.process([data.brewery]);
+    return new BreweryLocation(
+      data['name'], 
+      data['website'],
+      data["distance"], 
+      breweries.brews[0]);
   }
 }
 
@@ -140,7 +181,8 @@ export class BeerWithBrewery extends Brew {
     name: string,
     public abv: string,
     public style: string,
-    public breweries: Array<Brewery>
+    public breweries: Array<Brewery>,
+    public description: string
   ) {
     super(name);
   }
@@ -207,11 +249,13 @@ export class BeersWithBreweries extends Brews {
   processRow(data: any) {
     const breweries = new Breweries();
     var results = breweries.process(data['breweries']);
-    return new BeerWithBrewery(data['name'], data['abv'], data["style"]["shortName"], results);
+    return new BeerWithBrewery(data['name'], data['abv'],
+      data["style"]["shortName"], results, data["description"]);
   }
 }
 
 export interface Event{
   name: string;
   website: string;
+  description: string;
 }

@@ -3,22 +3,21 @@
 }
 
 .dashboard-card {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
+    //position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+    width: 90%;
+    justify-content: center;
 }
 
 .more-button {
-    position: absolute;
+    //position: absolute;
     top: 5px;
     right: 10px;
 }
 
-.dashboard-card-content {
-    text-align: center;
-}
 .myGridList {
     height: 100%;
 }

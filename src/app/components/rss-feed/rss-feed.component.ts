@@ -3,20 +3,20 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { HttpService } from '@app/services/http.service';
 import { GeolocationService } from '@app/services/geoloction.service';
-import {Breweries, BeersWithBreweries, Event} from '@app/models/brewTypes';
+import {BreweryLocations, BeersWithBreweries, Event} from '@app/models/brewTypes';
 @Component({
   selector: 'app-rss-feed',
   templateUrl: './rss-feed.component.html',
   styleUrls: ['./rss-feed.component.scss']
 })
 export class RssFeedComponent implements OnInit{
-  breweries: Breweries;
+  breweryLocations: BreweryLocations;
   beers: BeersWithBreweries;
   event: Event;
 
   constructor(private http: HttpService,
               private geolocation: GeolocationService) {
-    this.breweries = new Breweries();
+    this.breweryLocations = new BreweryLocations();
     this.beers = new BeersWithBreweries();
   }
   ngOnInit(): void {
@@ -31,30 +31,29 @@ export class RssFeedComponent implements OnInit{
         console.log(res);
         if(res["data"] === undefined){
           this.http.getCloseBreweries(lat, long).subscribe(res =>{
-            console.log("closest raw data")
-            this.breweries.process(res["data"]);
+            this.breweryLocations.process(res["data"]);
           });
         }else{
-          console.log("closest raw data")
-          this.breweries.process(res["data"]);
+          this.breweryLocations.process(res["data"]);
         }     
       });
     });
 
     // Get random beer of the day
     this.http.getRandomBeer().subscribe(res =>{
-        console.log("Random beer raw data")
         this.beers.process([res["data"]]);
+        console.log("Beer link");
+        console.log(res["data"]);
+        console.log(this.beers.brews[0].breweries[0].website);
     });
 
     // Get most recent event
     this.http.getUpcomingEvents().subscribe(res =>{
-      console.log("Event raw data")
-      console.log(res)
-      var row = res["data"][0];
+      var row = res["data"][res["data"].length - 1];
       var event : Event={
         name: row.name,
-        website: row.website
+        website: row.website,
+        description: row.description
       };
       this.event = event;
     });

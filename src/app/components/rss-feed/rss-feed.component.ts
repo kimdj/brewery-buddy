@@ -28,7 +28,6 @@ export class RssFeedComponent implements OnInit{
     this.geolocation.getLocation().subscribe(res =>{
       var curCoords = res.coords;
       this.http.getCloseBreweries(curCoords.latitude, curCoords.longitude).subscribe(res =>{
-        console.log(res);
         if(res["data"] === undefined){
           this.http.getCloseBreweries(lat, long).subscribe(res =>{
             this.breweryLocations.process(res["data"]);
@@ -42,9 +41,6 @@ export class RssFeedComponent implements OnInit{
     // Get random beer of the day
     this.http.getRandomBeer().subscribe(res =>{
         this.beers.process([res["data"]]);
-        console.log("Beer link");
-        console.log(res["data"]);
-        console.log(this.beers.brews[0].breweries[0].website);
     });
 
     // Get most recent event

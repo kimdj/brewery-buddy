@@ -126,9 +126,9 @@ export class SearchFormComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
-    // Get beer info
-    this.http.getBeers().subscribe(async (data: any) => {
-      await this.updateModel(new Beers(), data.data);
+    // Get all breweries
+    this.http.getBreweries().subscribe(async (data: any) => {
+      await this.updateModel(new Breweries(), data.data);
       this.spinner.off();
     });
 
@@ -144,41 +144,27 @@ export class SearchFormComponent implements OnInit {
 
     var searchType = this.userForm.get('searchType').value;
     var searchCriteria = this.userForm.get('searchCriteria').value;
-
-    if (
-      searchCriteria === '' &&
-      (searchType === 'Search Breweries by Keyword' ||
-        searchType === 'Search Beers by Keyword')
-    ) {
+    
+    if (searchCriteria === '') {
       this.notifier.showWarning('Search criteria invalid!', '');
       this.spinner.off();
       return;
     }
 
     // For keyword only searches, just want to know all beers that match
-    if (searchType === 'Search Breweries by Keyword') {
+    if (searchType === 'Breweries by Keyword') {
       this.http
         .getBreweriesKeyword(searchCriteria)
         .subscribe(async (data: any) => {
           await this.updateModel(new Breweries(), data.data);
           this.spinner.off();
         });
-    } else if (searchType === 'Search Beers by Keyword') {
+    } else if (searchType === 'Beers by Keyword') {
       this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
         await this.updateModel(new BeersWithBreweries(), data.data);
         this.spinner.off();
       });
-    } else if (searchType === 'Get All Breweries') {
-      this.http.getBreweries().subscribe(async (data: any) => {
-        await this.updateModel(new Beers(), data.data);
-        this.spinner.off();
-      });
-    } else if (searchType === 'Get All Beers') {
-      this.http.getBeers().subscribe(async (data: any) => {
-        await this.updateModel(new Beers(), data.data);
-        this.spinner.off();
-      });
-    } else {
+    }else {
       this.notifier.showError('Unknown search type!', '');
       this.spinner.off();
     }

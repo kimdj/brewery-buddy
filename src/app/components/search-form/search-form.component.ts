@@ -24,6 +24,7 @@ import {
   Beers,
   Breweries,
   BeersWithBreweries,
+  BreweryLocations,
 } from '@app/models/brewTypes';
 import { SpinnerService } from '@app/services/spinner.service';
 
@@ -144,8 +145,8 @@ export class SearchFormComponent implements OnInit {
 
     var searchType = this.userForm.get('searchType').value;
     var searchCriteria = this.userForm.get('searchCriteria').value;
-    
-    if (searchCriteria === '') {
+
+    if (searchCriteria === '' && searchType !== 'Breweries Nearby') {
       this.notifier.showWarning('Search criteria invalid!', '');
       this.spinner.off();
       return;
@@ -164,7 +165,26 @@ export class SearchFormComponent implements OnInit {
         await this.updateModel(new BeersWithBreweries(), data.data);
         this.spinner.off();
       });
-    }else {
+    }else if (searchType === 'Breweries Nearby') {
+      // Default to denver, because I know it will work:)
+        var lat = "39.7236683";
+        var long = "-105.0006015";
+        this.http.getCloseBreweries(this.curCoords.latitude, this.curCoords.longitude).subscribe(async data =>{
+          if(data["data"] === undefined){
+            this.http.getCloseBreweries(lat, long).subscribe( async data =>{
+              await this.updateModel(new BreweryLocations(), data["data"]);
+              this.spinner.off();
+            });
+          }else{
+            await this.updateModel(new BreweryLocations(), data["data"]);
+            this.spinner.off();
+          }     
+        });
+    this.http.getBeersKeyword(searchCriteria).subscribe(async (data: any) => {
+      await this.updateModel(new BeersWithBreweries(), data.data);
+      this.spinner.off();
+    });
+  }else {
       this.notifier.showError('Unknown search type!', '');
       this.spinner.off();
     }

@@ -254,8 +254,10 @@ export class SearchFormComponent implements OnInit {
       console.log('----------------------------------');
       console.log(res.data);
       if (res.data === undefined) {
+        this.cd.detectChanges();
         this.spinner.off();
         this.notifier.showWarning('Location could not be fetched.', 'Notice');
+        this.breweryAddress = null;
         return;
       }
       const destination = `${res.data[0].latitude},${res.data[0].longitude}`;

@@ -137,7 +137,7 @@
                         </mat-tab>
 
                         <!-- DIRECTIONS TAB -->
-                        <mat-tab *ngIf="curCoords && userForm.get('searchType').value !== 'Breweries Nearby'">
+                        <mat-tab *ngIf="curCoords && userForm.get('searchType').value !== 'Beers by Keyword'">
                             <ng-template mat-tab-label>
                                 Directions
                                 <mat-icon class="example-tab-icon"> directions </mat-icon>
@@ -157,11 +157,6 @@
                                         <b> Latitude: </b> {{breweryAddress.latitude}} <br />
                                         <b> Longitude: </b> {{breweryAddress.longitude}} <br />
                                     </div>
-
-                                    <!-- <ng-container *ngFor="let key of objectKeys(breweryAddress)"
-                                        style="display: inline">
-                                        <b> {{key}}: </b> {{breweryAddress[key]}}
-                                    </ng-container> -->
 
                                     <iframe *ngIf="src"
                                         width="600"

@@ -24,41 +24,35 @@ export class HttpService {
   /*****  Brewery DB  *****/
 
   getRandomBeer() {
-    return this.http.get('http://localhost:8080/get-random-beer');
+    return this.http.get('/get-random-beer');
   }
 
   getBeers() {
-    return this.http.get('http://localhost:8080/get-beers');
+    return this.http.get('/get-beers');
   }
 
   getBreweries() {
-    return this.http.get('http://localhost:8080/get-breweries');
+    return this.http.get('/get-breweries');
   }
 
   getUpcomingEvents() {
-    return this.http.get('http://localhost:8080/get-upcoming-events');
+    return this.http.get('/get-upcoming-events');
   }
   getCloseBreweries(lat, long) {
     return this.http.get(
-      `http://localhost:8080/get-breweriesClose?Latitude=${lat}&Longitude=${long}`
+      `/get-breweriesClose?Latitude=${lat}&Longitude=${long}`
     );
   }
 
   getBreweriesKeyword(searchCriteria) {
-    return this.http.get(
-      `http://localhost:8080/get-breweriesKeyword?query=${searchCriteria}`
-    );
+    return this.http.get(`/get-breweriesKeyword?query=${searchCriteria}`);
   }
 
   getBreweryLocation(id) {
-    return this.http.get(
-      `http://localhost:8080/get-breweryLocation?query=${id}`
-    );
+    return this.http.get(`/get-breweryLocation?query=${id}`);
   }
 
   getBeersKeyword(searchCriteria) {
-    return this.http.get(
-      `http://localhost:8080/get-beersKeyword?query=${searchCriteria}`
-    );
+    return this.http.get(`/get-beersKeyword?query=${searchCriteria}`);
   }
 }

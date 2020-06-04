@@ -40,7 +40,8 @@
                 <mat-label> Enter in any keywords to filter results </mat-label>
                 <input matInput
                     (keyup)="applyFilter($event)"
-                    placeholder="e.g. IPA, Belgian Style, Guinness, Lagunitas Brewing Company">
+                    placeholder="e.g. IPA, Belgian Style, Guinness, Lagunitas Brewing Company"
+                    #filterInput>
             </mat-form-field>
         </div>
     </div>

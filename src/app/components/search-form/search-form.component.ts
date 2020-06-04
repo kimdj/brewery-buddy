@@ -4,6 +4,7 @@ import {
   ViewChild,
   ChangeDetectorRef,
   ChangeDetectionStrategy,
+  ElementRef,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -84,6 +85,7 @@ export class SearchFormComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('filterInput') filterInput: ElementRef;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -152,6 +154,9 @@ export class SearchFormComponent implements OnInit {
 
   onSubmit() {
     this.spinner.on();
+
+    // Clear filter input
+    this.filterInput.nativeElement.value = '';
 
     var searchType = this.userForm.get('searchType').value;
     var searchCriteria = this.userForm.get('searchCriteria').value;

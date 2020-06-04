@@ -137,7 +137,7 @@
                         </mat-tab>
 
                         <!-- DIRECTIONS TAB -->
-                        <mat-tab *ngIf="curCoords">
+                        <mat-tab *ngIf="curCoords && userForm.get('searchType').value !== 'Breweries Nearby'">
                             <ng-template mat-tab-label>
                                 Directions
                                 <mat-icon class="example-tab-icon"> directions </mat-icon>
@@ -176,7 +176,7 @@
                         </mat-tab>
 
                         <!-- BEER STUFF TAB -->
-                        <mat-tab>
+                        <!-- <mat-tab>
                             <ng-template mat-tab-label>
                                 BEER STUFF
                                 <mat-icon class="example-tab-icon"> local_drink </mat-icon>
@@ -194,7 +194,7 @@
 
                                 </div>
                             </ng-template>
-                        </mat-tab>
+                        </mat-tab> -->
 
                     </mat-tab-group>
 

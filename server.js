@@ -123,6 +123,7 @@ app.get("/get-breweryLocation", function (req, res) {
       res.send(_res.body);
     } catch (err) {
       console.error(err);
+      res.send(false);
     }
   })();
 });

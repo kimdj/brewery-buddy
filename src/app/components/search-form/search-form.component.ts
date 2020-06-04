@@ -249,18 +249,11 @@ export class SearchFormComponent implements OnInit {
 
     this.spinner.on();
 
-    // Get the brewery coordinates
-    this.http.getBreweryLocation(found.id).subscribe((res: any) => {
-      console.log('----------------------------------');
-      console.log(res.data);
-      if (res.data === undefined) {
-        this.cd.detectChanges();
-        this.spinner.off();
-        this.notifier.showWarning('Location could not be fetched.', 'Notice');
-        this.breweryAddress = null;
-        return;
-      }
-      const destination = `${res.data[0].latitude},${res.data[0].longitude}`;
+    if (
+      element.hasOwnProperty('latitude') &&
+      element.hasOwnProperty('longitude')
+    ) {
+      const destination = `${element.latitude},${element.longitude}`;
 
       console.log('origin:');
       console.log(origin);
@@ -269,15 +262,15 @@ export class SearchFormComponent implements OnInit {
 
       // Get brewery address
       this.breweryAddress = {
-        name: res.data[0].name,
-        phone: res.data[0].phone,
-        streetAddress: res.data[0].streetAddress,
-        locality: res.data[0].locality,
-        region: res.data[0].region,
-        postalCode: res.data[0].postalCode,
-        country: res.data[0].countryIsoCode,
-        latitude: res.data[0].latitude,
-        longitude: res.data[0].longitude,
+        name: element.name,
+        phone: '',
+        streetAddress: element.address,
+        locality: element.locality,
+        region: '',
+        postalCode: '',
+        country: '',
+        latitude: element.latitude,
+        longitude: element.longitude,
       };
 
       console.log(this.breweryAddress);
@@ -288,11 +281,52 @@ export class SearchFormComponent implements OnInit {
       console.log(`src: ${this.src}`);
 
       this.spinner.off();
+    } else {
+      // Get the brewery coordinates
+      this.http.getBreweryLocation(found.id).subscribe((res: any) => {
+        console.log('----------------------------------');
+        console.log(res.data);
+        if (res.data === undefined || res.data === false) {
+          this.cd.detectChanges();
+          this.spinner.off();
+          this.notifier.showWarning('Location could not be fetched.', 'Notice');
+          this.breweryAddress = null;
+          return;
+        }
+        const destination = `${res.data[0].latitude},${res.data[0].longitude}`;
 
-      // return this.sanitizer.bypassSecurityTrustResourceUrl(
-      //   `https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}&key=${api_key}`
-      // );
-    });
+        console.log('origin:');
+        console.log(origin);
+        console.log('destination:');
+        console.log(destination);
+
+        // Get brewery address
+        this.breweryAddress = {
+          name: res.data[0].name,
+          phone: res.data[0].phone,
+          streetAddress: res.data[0].streetAddress,
+          locality: res.data[0].locality,
+          region: res.data[0].region,
+          postalCode: res.data[0].postalCode,
+          country: res.data[0].countryIsoCode,
+          latitude: res.data[0].latitude,
+          longitude: res.data[0].longitude,
+        };
+
+        console.log(this.breweryAddress);
+
+        this.src = this.sanitizer.bypassSecurityTrustResourceUrl(
+          `https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}&key=${api_key}`
+        );
+        console.log(`src: ${this.src}`);
+
+        this.spinner.off();
+
+        // return this.sanitizer.bypassSecurityTrustResourceUrl(
+        //   `https://www.google.com/maps/embed/v1/directions?origin=${origin}&destination=${destination}&key=${api_key}`
+        // );
+      });
+    }
   }
 
   /***********************************************************************************/

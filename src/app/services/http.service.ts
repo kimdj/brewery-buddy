@@ -12,54 +12,53 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private http: HttpClient) {
-  }
-
-  testAPI() {
-    return this.http.get('https://restcountries.eu/rest/v2/all');
-  }
+  constructor(private http: HttpClient) {}
 
   /*****  RSS Feed  *****/
-  
+
   getRssFeed() {
-    return this.http.get('https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss');
+    return this.http.get(
+      'https://rss2json.com/api.json?rss_url=http://thefullpint.libsyn.com/rss'
+    );
   }
-
-  /*****  Open Brewery DB  *****/
-
-  // getBreweries() {
-  //   return this.http.get('https://api.openbrewerydb.org/breweries');
-  // }
-
   /*****  Brewery DB  *****/
 
   getRandomBeer() {
-    return this.http.get('/get-random-beer');
+    return this.http.get('http://localhost:8080/get-random-beer');
   }
 
   getBeers() {
-    return this.http.get('/get-beers');
+    return this.http.get('http://localhost:8080/get-beers');
   }
 
   getBreweries() {
-    return this.http.get('/get-breweries');
+    return this.http.get('http://localhost:8080/get-breweries');
   }
 
   getUpcomingEvents() {
-    return this.http.get('/get-upcoming-events');
+    return this.http.get('http://localhost:8080/get-upcoming-events');
   }
-  getCloseBreweries(lat, long){
-    return this.http.get(`/get-breweriesClose?Latitude=${lat}&Longitude=${long}`);
-  }
-
-  getBreweriesKeyword(searchCriteria){
-    return this.http.get(`/get-breweriesKeyword?query=${searchCriteria}`);
+  getCloseBreweries(lat, long) {
+    return this.http.get(
+      `http://localhost:8080/get-breweriesClose?Latitude=${lat}&Longitude=${long}`
+    );
   }
 
-  getBeersKeyword(searchCriteria){
-    return this.http.get(`/get-beersKeyword?query=${searchCriteria}`);
+  getBreweriesKeyword(searchCriteria) {
+    return this.http.get(
+      `http://localhost:8080/get-breweriesKeyword?query=${searchCriteria}`
+    );
   }
-  
-  /*****  Google Maps  *****/
 
+  getBreweryLocation(id) {
+    return this.http.get(
+      `http://localhost:8080/get-breweryLocation?query=${id}`
+    );
+  }
+
+  getBeersKeyword(searchCriteria) {
+    return this.http.get(
+      `http://localhost:8080/get-beersKeyword?query=${searchCriteria}`
+    );
+  }
 }

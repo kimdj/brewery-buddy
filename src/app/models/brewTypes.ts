@@ -103,9 +103,10 @@ export class Beers extends Brews {
         different locations.
         
 **************************************************************/
-
 export class Brewery extends Brew {
-  constructor(name: string, public website: string, public description: string) {
+  constructor(name: string, public website: string,
+    public description: string, public established: string,
+    public updateDate: string) {
     super(name);
   }
 }
@@ -116,15 +117,20 @@ export class Breweries extends Brews {
       header: 'Name',
     },
     {
-      name: 'website',
-      header: 'website',
+      name: 'established',
+      header: 'Established',
+    },
+    {
+      name: 'updateDate',
+      header: 'Last Updated',
     },
   ];
 
   brews: Array<Brewery>;
 
   processRow(data: any) {
-    return new Brewery(data['name'], data['website'], data['description']);
+    return new Brewery(data['name'], data['website'],
+     data['description'], data['established'], data['updateDate']);
   }
 }
 
@@ -140,7 +146,11 @@ export class BreweryLocation extends Brew {
     name: string,
     public website: string,
     public distance: string, 
-    public brewery: Brewery) {
+    public brewery: Brewery,
+    public latitude: string,
+    public longitude: string,
+    public locality: string,
+    public address: string) {
     super(name);
   }
 }
@@ -151,9 +161,13 @@ export class BreweryLocations extends Brews {
       header: 'Name',
     },
     {
-      name: 'website',
-      header: 'website',
+      name: 'locality',
+      header: 'Location',
     },
+    {
+      name: 'streetAddress',
+      header: 'Address',
+    }
   ];
 
   brews: Array<BreweryLocation>;
@@ -165,7 +179,11 @@ export class BreweryLocations extends Brews {
       data['name'], 
       data['website'],
       data["distance"], 
-      breweries.brews[0]);
+      breweries.brews[0],
+      data['latitude'], 
+      data['longitude'],
+      data["locality"],
+      data["streetAddress"]);
   }
 }
 
@@ -182,7 +200,8 @@ export class BeerWithBrewery extends Brew {
     public abv: string,
     public style: string,
     public breweries: Array<Brewery>,
-    public description: string
+    public description: string,
+    public ibu: string,
   ) {
     super(name);
   }
@@ -205,12 +224,8 @@ export class BeersWithBreweries extends Brews {
       header: 'Style',
     },
     {
-      name: 'brewery',
-      header: 'Brewery',
-    },
-    {
-      name: 'website',
-      header: 'Website',
+      name: 'ibu',
+      header: 'IBU',
     },
   ];
 
@@ -250,7 +265,7 @@ export class BeersWithBreweries extends Brews {
     const breweries = new Breweries();
     var results = breweries.process(data['breweries']);
     return new BeerWithBrewery(data['name'], data['abv'],
-      data["style"]["shortName"], results, data["description"]);
+      data["style"]["shortName"], results, data["description"], data["ibu"]);
   }
 }
 
@@ -258,4 +273,31 @@ export interface Event{
   name: string;
   website: string;
   description: string;
+}
+
+export class Location extends Brew {
+  constructor(
+    name: string,
+    public streetAddress: string,
+    public latitude: string,
+    public longitude: string,
+    public locality: string
+  ) {
+    super(name);
+  }
+}
+export class Locations extends Brews {
+
+  brews: Array<Location>;
+
+  processRow(data: any) {
+    const breweries = new Breweries();
+    var results = breweries.process([data.brewery]);
+    return new Location(
+      data['name'], 
+      data['streetAddress'],
+      data["latitude"], 
+      data["longitude"], 
+      data["locality"]);
+  }
 }
